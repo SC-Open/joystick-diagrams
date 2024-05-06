@@ -57,7 +57,7 @@ class ParserPlugin(PluginInterface):
     def path_type(self):
         return self.FilePath(
             "Select your Elite Dangerous Custom.4.0.binds",
-            self.instance.file_path if self.instance else Path.home(),
+            Path.home(),
             [".binds"],
         )
 
