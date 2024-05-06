@@ -1,0 +1,1770 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Root PresetName="Custom" MajorVersion="4" MinorVersion="0">
+	<KeyboardLayout>en-US</KeyboardLayout>
+	<MouseXMode Value="Bindings_MouseYaw" />
+	<MouseXDecay Value="0" />
+	<MouseYMode Value="Bindings_MousePitch" />
+	<MouseYDecay Value="0" />
+	<MouseReset>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MouseReset>
+	<MouseSensitivity Value="1.00000000" />
+	<MouseDecayRate Value="4.00000000" />
+	<MouseDeadzone Value="0.05000000" />
+	<MouseLinearity Value="1.00000000" />
+	<MouseGUI Value="1" />
+	<YawAxisRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</YawAxisRaw>
+	<YawLeftButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</YawLeftButton>
+	<YawRightButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</YawRightButton>
+	<YawToRollMode Value="Bindings_YawIntoRollNone" />
+	<YawToRollSensitivity Value="0.40000001" />
+	<YawToRollMode_FAOff Value="" />
+	<YawToRollButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="0" />
+	</YawToRollButton>
+	<RollAxisRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</RollAxisRaw>
+	<RollLeftButton>
+		<Primary Device="Keyboard" Key="Key_Q" />
+		<Secondary Device="Mouse" Key="Mouse_4" />
+	</RollLeftButton>
+	<RollRightButton>
+		<Primary Device="Keyboard" Key="Key_E" />
+		<Secondary Device="Mouse" Key="Mouse_5" />
+	</RollRightButton>
+	<PitchAxisRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</PitchAxisRaw>
+	<PitchUpButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</PitchUpButton>
+	<PitchDownButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</PitchDownButton>
+	<LateralThrustRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</LateralThrustRaw>
+	<LeftThrustButton>
+		<Primary Device="Keyboard" Key="Key_A" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</LeftThrustButton>
+	<RightThrustButton>
+		<Primary Device="Keyboard" Key="Key_D" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</RightThrustButton>
+	<VerticalThrustRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</VerticalThrustRaw>
+	<UpThrustButton>
+		<Primary Device="Keyboard" Key="Key_R" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</UpThrustButton>
+	<DownThrustButton>
+		<Primary Device="Keyboard" Key="Key_F" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</DownThrustButton>
+	<AheadThrust>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</AheadThrust>
+	<ForwardThrustButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ForwardThrustButton>
+	<BackwardThrustButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</BackwardThrustButton>
+	<UseAlternateFlightValuesToggle>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="1" />
+	</UseAlternateFlightValuesToggle>
+	<YawAxisAlternate>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</YawAxisAlternate>
+	<RollAxisAlternate>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</RollAxisAlternate>
+	<PitchAxisAlternate>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</PitchAxisAlternate>
+	<LateralThrustAlternate>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</LateralThrustAlternate>
+	<VerticalThrustAlternate>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</VerticalThrustAlternate>
+	<ThrottleAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</ThrottleAxis>
+	<ThrottleRange Value="" />
+	<ToggleReverseThrottleInput>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="0" />
+	</ToggleReverseThrottleInput>
+	<ForwardKey>
+		<Primary Device="Keyboard" Key="Key_W" />
+		<Secondary Device="Mouse" Key="Pos_Mouse_ZAxis" />
+	</ForwardKey>
+	<BackwardKey>
+		<Primary Device="Keyboard" Key="Key_S" />
+		<Secondary Device="Mouse" Key="Neg_Mouse_ZAxis" />
+	</BackwardKey>
+	<ThrottleIncrement Value="0.10000000" />
+	<SetSpeedMinus100>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SetSpeedMinus100>
+	<SetSpeedMinus75>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SetSpeedMinus75>
+	<SetSpeedMinus50>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SetSpeedMinus50>
+	<SetSpeedMinus25>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SetSpeedMinus25>
+	<SetSpeedZero>
+		<Primary Device="Keyboard" Key="Key_X" />
+		<Secondary Device="Mouse" Key="Mouse_3" />
+	</SetSpeedZero>
+	<SetSpeed25>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SetSpeed25>
+	<SetSpeed50>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SetSpeed50>
+	<SetSpeed75>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SetSpeed75>
+	<SetSpeed100>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SetSpeed100>
+	<YawAxis_Landing>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</YawAxis_Landing>
+	<YawLeftButton_Landing>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</YawLeftButton_Landing>
+	<YawRightButton_Landing>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</YawRightButton_Landing>
+	<YawToRollMode_Landing Value="" />
+	<PitchAxis_Landing>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</PitchAxis_Landing>
+	<PitchUpButton_Landing>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</PitchUpButton_Landing>
+	<PitchDownButton_Landing>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</PitchDownButton_Landing>
+	<RollAxis_Landing>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</RollAxis_Landing>
+	<RollLeftButton_Landing>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</RollLeftButton_Landing>
+	<RollRightButton_Landing>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</RollRightButton_Landing>
+	<LateralThrust_Landing>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</LateralThrust_Landing>
+	<LeftThrustButton_Landing>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</LeftThrustButton_Landing>
+	<RightThrustButton_Landing>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</RightThrustButton_Landing>
+	<VerticalThrust_Landing>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</VerticalThrust_Landing>
+	<UpThrustButton_Landing>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</UpThrustButton_Landing>
+	<DownThrustButton_Landing>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</DownThrustButton_Landing>
+	<AheadThrust_Landing>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</AheadThrust_Landing>
+	<ForwardThrustButton_Landing>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ForwardThrustButton_Landing>
+	<BackwardThrustButton_Landing>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</BackwardThrustButton_Landing>
+	<ToggleFlightAssist>
+		<Primary Device="Keyboard" Key="Key_Z" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="1" />
+	</ToggleFlightAssist>
+	<UseBoostJuice>
+		<Primary Device="Keyboard" Key="Key_Tab" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</UseBoostJuice>
+	<HyperSuperCombination>
+		<Primary Device="Keyboard" Key="Key_J" />
+		<Secondary Device="Keyboard" Key="Key_5" />
+	</HyperSuperCombination>
+	<Supercruise>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</Supercruise>
+	<Hyperspace>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</Hyperspace>
+	<DisableRotationCorrectToggle>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="1" />
+	</DisableRotationCorrectToggle>
+	<OrbitLinesToggle>
+		<Primary Device="Keyboard" Key="Key_Equals" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</OrbitLinesToggle>
+	<SelectTarget>
+		<Primary Device="Keyboard" Key="Key_T" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SelectTarget>
+	<CycleNextTarget>
+		<Primary Device="Keyboard" Key="Key_G" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CycleNextTarget>
+	<CyclePreviousTarget>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CyclePreviousTarget>
+	<SelectHighestThreat>
+		<Primary Device="Keyboard" Key="Key_H" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SelectHighestThreat>
+	<CycleNextHostileTarget>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CycleNextHostileTarget>
+	<CyclePreviousHostileTarget>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CyclePreviousHostileTarget>
+	<TargetWingman0>
+		<Primary Device="Keyboard" Key="Key_7" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</TargetWingman0>
+	<TargetWingman1>
+		<Primary Device="Keyboard" Key="Key_8" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</TargetWingman1>
+	<TargetWingman2>
+		<Primary Device="Keyboard" Key="Key_9" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</TargetWingman2>
+	<SelectTargetsTarget>
+		<Primary Device="Keyboard" Key="Key_0" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SelectTargetsTarget>
+	<WingNavLock>
+		<Primary Device="Keyboard" Key="Key_Minus" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</WingNavLock>
+	<CycleNextSubsystem>
+		<Primary Device="Keyboard" Key="Key_Y" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CycleNextSubsystem>
+	<CyclePreviousSubsystem>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CyclePreviousSubsystem>
+	<TargetNextRouteSystem>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</TargetNextRouteSystem>
+	<PrimaryFire>
+		<Primary Device="Mouse" Key="Mouse_1" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</PrimaryFire>
+	<SecondaryFire>
+		<Primary Device="Mouse" Key="Mouse_2" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SecondaryFire>
+	<CycleFireGroupNext>
+		<Primary Device="Keyboard" Key="Key_N" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CycleFireGroupNext>
+	<CycleFireGroupPrevious>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CycleFireGroupPrevious>
+	<DeployHardpointToggle>
+		<Primary Device="Keyboard" Key="Key_U" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</DeployHardpointToggle>
+	<DeployHardpointsOnFire Value="1" />
+	<ToggleButtonUpInput>
+		<Primary Device="Keyboard" Key="Key_Delete" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="1" />
+	</ToggleButtonUpInput>
+	<DeployHeatSink>
+		<Primary Device="Keyboard" Key="Key_V" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</DeployHeatSink>
+	<ShipSpotLightToggle>
+		<Primary Device="Keyboard" Key="Key_Insert" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ShipSpotLightToggle>
+	<RadarRangeAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</RadarRangeAxis>
+	<RadarIncreaseRange>
+		<Primary Device="Keyboard" Key="Key_PageUp" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</RadarIncreaseRange>
+	<RadarDecreaseRange>
+		<Primary Device="Keyboard" Key="Key_PageDown" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</RadarDecreaseRange>
+	<IncreaseEnginesPower>
+		<Primary Device="Keyboard" Key="Key_UpArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</IncreaseEnginesPower>
+	<IncreaseWeaponsPower>
+		<Primary Device="Keyboard" Key="Key_RightArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</IncreaseWeaponsPower>
+	<IncreaseSystemsPower>
+		<Primary Device="Keyboard" Key="Key_LeftArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</IncreaseSystemsPower>
+	<ResetPowerDistribution>
+		<Primary Device="Keyboard" Key="Key_DownArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ResetPowerDistribution>
+	<HMDReset>
+		<Primary Device="Keyboard" Key="Key_F12" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HMDReset>
+	<ToggleCargoScoop>
+		<Primary Device="Keyboard" Key="Key_Home" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="1" />
+	</ToggleCargoScoop>
+	<EjectAllCargo>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</EjectAllCargo>
+	<LandingGearToggle>
+		<Primary Device="Keyboard" Key="Key_L" />
+		<Secondary Device="Keyboard" Key="Key_6" />
+	</LandingGearToggle>
+	<MicrophoneMute>
+		<Primary Device="Keyboard" Key="Key_BackSlash" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="0" />
+	</MicrophoneMute>
+	<MuteButtonMode Value="mute_toggle" />
+	<CqcMuteButtonMode Value="mute_pushToTalk" />
+	<UseShieldCell>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</UseShieldCell>
+	<FireChaffLauncher>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FireChaffLauncher>
+	<ChargeECM>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ChargeECM>
+	<EnableRumbleTrigger Value="1" />
+	<EnableMenuGroups Value="0" />
+	<MouseGUI Value="1" />
+	<WeaponColourToggle>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</WeaponColourToggle>
+	<EngineColourToggle>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</EngineColourToggle>
+	<NightVisionToggle>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</NightVisionToggle>
+	<UIFocus>
+		<Primary Device="Keyboard" Key="Key_LeftShift" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</UIFocus>
+	<UIFocusMode Value="Bindings_FocusModeHold" />
+	<FocusLeftPanel>
+		<Primary Device="Keyboard" Key="Key_1" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FocusLeftPanel>
+	<FocusCommsPanel>
+		<Primary Device="Keyboard" Key="Key_2" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FocusCommsPanel>
+	<FocusOnTextEntryField Value="0" />
+	<QuickCommsPanel>
+		<Primary Device="Keyboard" Key="Key_Enter" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</QuickCommsPanel>
+	<FocusRadarPanel>
+		<Primary Device="Keyboard" Key="Key_3" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FocusRadarPanel>
+	<FocusRightPanel>
+		<Primary Device="Keyboard" Key="Key_4" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FocusRightPanel>
+	<LeftPanelFocusOptions Value="" />
+	<CommsPanelFocusOptions Value="" />
+	<RolePanelFocusOptions Value="" />
+	<RightPanelFocusOptions Value="" />
+	<EnableCameraLockOn Value="1" />
+	<GalaxyMapOpen>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</GalaxyMapOpen>
+	<SystemMapOpen>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SystemMapOpen>
+	<ShowPGScoreSummaryInput>
+		<Primary Device="Keyboard" Key="Key_F1" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="0" />
+	</ShowPGScoreSummaryInput>
+	<HeadLookToggle>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="1" />
+	</HeadLookToggle>
+	<Pause>
+		<Primary Device="Keyboard" Key="Key_P" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</Pause>
+	<FriendsMenu>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FriendsMenu>
+	<OpenCodexGoToDiscovery>
+		<Primary Device="Keyboard" Key="Key_O" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</OpenCodexGoToDiscovery>
+	<PlayerHUDModeToggle>
+		<Primary Device="Keyboard" Key="Key_M" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</PlayerHUDModeToggle>
+	<ExplorationFSSEnter>
+		<Primary Device="Keyboard" Key="Key_Apostrophe" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationFSSEnter>
+	<UI_Up>
+		<Primary Device="Keyboard" Key="Key_W" />
+		<Secondary Device="Keyboard" Key="Key_UpArrow" />
+	</UI_Up>
+	<UI_Down>
+		<Primary Device="Keyboard" Key="Key_S" />
+		<Secondary Device="Keyboard" Key="Key_DownArrow" />
+	</UI_Down>
+	<UI_Left>
+		<Primary Device="Keyboard" Key="Key_A" />
+		<Secondary Device="Keyboard" Key="Key_LeftArrow" />
+	</UI_Left>
+	<UI_Right>
+		<Primary Device="Keyboard" Key="Key_D" />
+		<Secondary Device="Keyboard" Key="Key_RightArrow" />
+	</UI_Right>
+	<UI_Select>
+		<Primary Device="Keyboard" Key="Key_Space" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</UI_Select>
+	<UI_Back>
+		<Primary Device="Keyboard" Key="Key_Backspace" />
+		<Secondary Device="Mouse" Key="Mouse_2" />
+	</UI_Back>
+	<UI_Toggle>
+		<Primary Device="Keyboard" Key="Key_Equals" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</UI_Toggle>
+	<CycleNextPanel>
+		<Primary Device="Keyboard" Key="Key_E" />
+		<Secondary Device="Keyboard" Key="Key_End" />
+	</CycleNextPanel>
+	<CyclePreviousPanel>
+		<Primary Device="Keyboard" Key="Key_Q" />
+		<Secondary Device="Keyboard" Key="Key_Delete" />
+	</CyclePreviousPanel>
+	<CycleNextPage>
+		<Primary Device="Keyboard" Key="Key_C" />
+		<Secondary Device="Keyboard" Key="Key_Home" />
+	</CycleNextPage>
+	<CyclePreviousPage>
+		<Primary Device="Keyboard" Key="Key_Z" />
+		<Secondary Device="Keyboard" Key="Key_Insert" />
+	</CyclePreviousPage>
+	<MouseHeadlook Value="1" />
+	<MouseHeadlookInvert Value="0" />
+	<MouseHeadlookSensitivity Value="0.50000000" />
+	<HeadlookDefault Value="0" />
+	<HeadlookIncrement Value="0.00000000" />
+	<HeadlookMode Value="Bindings_HeadlookModeAccumulate" />
+	<HeadlookResetOnToggle Value="1" />
+	<HeadlookSensitivity Value="1.00000000" />
+	<HeadlookSmoothing Value="1" />
+	<HeadLookReset>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HeadLookReset>
+	<HeadLookPitchUp>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HeadLookPitchUp>
+	<HeadLookPitchDown>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HeadLookPitchDown>
+	<HeadLookPitchAxisRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</HeadLookPitchAxisRaw>
+	<HeadLookYawLeft>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HeadLookYawLeft>
+	<HeadLookYawRight>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HeadLookYawRight>
+	<HeadLookYawAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</HeadLookYawAxis>
+	<MotionHeadlook Value="0" />
+	<HeadlookMotionSensitivity Value="1.00000000" />
+	<yawRotateHeadlook Value="0" />
+	<CamPitchAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</CamPitchAxis>
+	<CamPitchUp>
+		<Primary Device="Keyboard" Key="Key_T" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CamPitchUp>
+	<CamPitchDown>
+		<Primary Device="Keyboard" Key="Key_G" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CamPitchDown>
+	<CamYawAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</CamYawAxis>
+	<CamYawLeft>
+		<Primary Device="Keyboard" Key="Key_Q" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CamYawLeft>
+	<CamYawRight>
+		<Primary Device="Keyboard" Key="Key_E" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CamYawRight>
+	<CamTranslateYAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</CamTranslateYAxis>
+	<CamTranslateForward>
+		<Primary Device="Keyboard" Key="Key_W" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CamTranslateForward>
+	<CamTranslateBackward>
+		<Primary Device="Keyboard" Key="Key_S" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CamTranslateBackward>
+	<CamTranslateXAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</CamTranslateXAxis>
+	<CamTranslateLeft>
+		<Primary Device="Keyboard" Key="Key_A" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CamTranslateLeft>
+	<CamTranslateRight>
+		<Primary Device="Keyboard" Key="Key_D" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CamTranslateRight>
+	<CamTranslateZAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</CamTranslateZAxis>
+	<CamTranslateUp>
+		<Primary Device="Keyboard" Key="Key_R" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CamTranslateUp>
+	<CamTranslateDown>
+		<Primary Device="Keyboard" Key="Key_F" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CamTranslateDown>
+	<CamZoomAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</CamZoomAxis>
+	<CamZoomIn>
+		<Primary Device="Keyboard" Key="Key_Z" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CamZoomIn>
+	<CamZoomOut>
+		<Primary Device="Keyboard" Key="Key_X" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CamZoomOut>
+	<CamTranslateZHold>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="0" />
+	</CamTranslateZHold>
+	<GalaxyMapHome>
+		<Primary Device="Keyboard" Key="Key_Home" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</GalaxyMapHome>
+	<ToggleDriveAssist>
+		<Primary Device="Keyboard" Key="Key_Z" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="0" />
+	</ToggleDriveAssist>
+	<DriveAssistDefault Value="1" />
+	<MouseBuggySteeringXMode Value="" />
+	<MouseBuggySteeringXDecay Value="0" />
+	<MouseBuggyRollingXMode Value="" />
+	<MouseBuggyRollingXDecay Value="0" />
+	<MouseBuggyYMode Value="" />
+	<MouseBuggyYDecay Value="0" />
+	<SteeringAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</SteeringAxis>
+	<SteerLeftButton>
+		<Primary Device="Keyboard" Key="Key_A" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SteerLeftButton>
+	<SteerRightButton>
+		<Primary Device="Keyboard" Key="Key_D" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SteerRightButton>
+	<BuggyRollAxisRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</BuggyRollAxisRaw>
+	<BuggyRollLeftButton>
+		<Primary Device="Keyboard" Key="Key_A" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</BuggyRollLeftButton>
+	<BuggyRollRightButton>
+		<Primary Device="Keyboard" Key="Key_D" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</BuggyRollRightButton>
+	<BuggyPitchAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</BuggyPitchAxis>
+	<BuggyPitchUpButton>
+		<Primary Device="Keyboard" Key="Key_W" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</BuggyPitchUpButton>
+	<BuggyPitchDownButton>
+		<Primary Device="Keyboard" Key="Key_S" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</BuggyPitchDownButton>
+	<VerticalThrustersButton>
+		<Primary Device="Keyboard" Key="Key_Space" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="0" />
+	</VerticalThrustersButton>
+	<BuggyPrimaryFireButton>
+		<Primary Device="Mouse" Key="Mouse_1" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</BuggyPrimaryFireButton>
+	<BuggySecondaryFireButton>
+		<Primary Device="Mouse" Key="Mouse_2" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</BuggySecondaryFireButton>
+	<AutoBreakBuggyButton>
+		<Primary Device="Keyboard" Key="Key_X" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="0" />
+	</AutoBreakBuggyButton>
+	<HeadlightsBuggyButton>
+		<Primary Device="Keyboard" Key="Key_L" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HeadlightsBuggyButton>
+	<ToggleBuggyTurretButton>
+		<Primary Device="Keyboard" Key="Key_U" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ToggleBuggyTurretButton>
+	<BuggyCycleFireGroupNext>
+		<Primary Device="Keyboard" Key="Key_N" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</BuggyCycleFireGroupNext>
+	<BuggyCycleFireGroupPrevious>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</BuggyCycleFireGroupPrevious>
+	<SelectTarget_Buggy>
+		<Primary Device="Mouse" Key="Mouse_2" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SelectTarget_Buggy>
+	<MouseTurretXMode Value="Bindings_MouseYaw" />
+	<MouseTurretXDecay Value="1" />
+	<MouseTurretYMode Value="Bindings_MousePitch" />
+	<MouseTurretYDecay Value="1" />
+	<BuggyTurretYawAxisRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</BuggyTurretYawAxisRaw>
+	<BuggyTurretYawLeftButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</BuggyTurretYawLeftButton>
+	<BuggyTurretYawRightButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</BuggyTurretYawRightButton>
+	<BuggyTurretPitchAxisRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</BuggyTurretPitchAxisRaw>
+	<BuggyTurretPitchUpButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</BuggyTurretPitchUpButton>
+	<BuggyTurretPitchDownButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</BuggyTurretPitchDownButton>
+	<BuggyTurretMouseSensitivity Value="1.00000000" />
+	<BuggyTurretMouseDeadzone Value="0.05000000" />
+	<BuggyTurretMouseLinearity Value="1.00000000" />
+	<DriveSpeedAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</DriveSpeedAxis>
+	<BuggyThrottleRange Value="Bindings_BuggyThrottleForewardOnly" />
+	<BuggyToggleReverseThrottleInput>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="0" />
+	</BuggyToggleReverseThrottleInput>
+	<BuggyThrottleIncrement Value="0.00000000" />
+	<IncreaseSpeedButtonMax>
+		<Primary Device="Keyboard" Key="Key_E" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</IncreaseSpeedButtonMax>
+	<DecreaseSpeedButtonMax>
+		<Primary Device="Keyboard" Key="Key_Q" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</DecreaseSpeedButtonMax>
+	<IncreaseSpeedButtonPartial>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</IncreaseSpeedButtonPartial>
+	<DecreaseSpeedButtonPartial>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</DecreaseSpeedButtonPartial>
+	<IncreaseEnginesPower_Buggy>
+		<Primary Device="Keyboard" Key="Key_UpArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</IncreaseEnginesPower_Buggy>
+	<IncreaseWeaponsPower_Buggy>
+		<Primary Device="Keyboard" Key="Key_RightArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</IncreaseWeaponsPower_Buggy>
+	<IncreaseSystemsPower_Buggy>
+		<Primary Device="Keyboard" Key="Key_LeftArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</IncreaseSystemsPower_Buggy>
+	<ResetPowerDistribution_Buggy>
+		<Primary Device="Keyboard" Key="Key_DownArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ResetPowerDistribution_Buggy>
+	<ToggleCargoScoop_Buggy>
+		<Primary Device="Keyboard" Key="Key_Home" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="1" />
+	</ToggleCargoScoop_Buggy>
+	<EjectAllCargo_Buggy>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</EjectAllCargo_Buggy>
+	<RecallDismissShip>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</RecallDismissShip>
+	<EnableMenuGroupsSRV Value="0" />
+	<UIFocus_Buggy>
+		<Primary Device="Keyboard" Key="Key_LeftShift" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</UIFocus_Buggy>
+	<FocusLeftPanel_Buggy>
+		<Primary Device="Keyboard" Key="Key_1" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FocusLeftPanel_Buggy>
+	<FocusCommsPanel_Buggy>
+		<Primary Device="Keyboard" Key="Key_2" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FocusCommsPanel_Buggy>
+	<QuickCommsPanel_Buggy>
+		<Primary Device="Keyboard" Key="Key_Enter" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</QuickCommsPanel_Buggy>
+	<FocusRadarPanel_Buggy>
+		<Primary Device="Keyboard" Key="Key_3" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FocusRadarPanel_Buggy>
+	<FocusRightPanel_Buggy>
+		<Primary Device="Keyboard" Key="Key_4" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FocusRightPanel_Buggy>
+	<GalaxyMapOpen_Buggy>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</GalaxyMapOpen_Buggy>
+	<SystemMapOpen_Buggy>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SystemMapOpen_Buggy>
+	<OpenCodexGoToDiscovery_Buggy>
+		<Primary Device="Keyboard" Key="Key_O" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</OpenCodexGoToDiscovery_Buggy>
+	<PlayerHUDModeToggle_Buggy>
+		<Primary Device="Keyboard" Key="Key_M" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</PlayerHUDModeToggle_Buggy>
+	<HeadLookToggle_Buggy>
+		<Primary Device="Mouse" Key="Mouse_3" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="1" />
+	</HeadLookToggle_Buggy>
+	<MultiCrewToggleMode>
+		<Primary Device="Keyboard" Key="Key_Tab" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MultiCrewToggleMode>
+	<MultiCrewPrimaryFire>
+		<Primary Device="Mouse" Key="Mouse_1" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MultiCrewPrimaryFire>
+	<MultiCrewSecondaryFire>
+		<Primary Device="Mouse" Key="Mouse_2" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MultiCrewSecondaryFire>
+	<MultiCrewPrimaryUtilityFire>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MultiCrewPrimaryUtilityFire>
+	<MultiCrewSecondaryUtilityFire>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MultiCrewSecondaryUtilityFire>
+	<MultiCrewThirdPersonMouseXMode Value="Bindings_MouseYaw" />
+	<MultiCrewThirdPersonMouseXDecay Value="0" />
+	<MultiCrewThirdPersonMouseYMode Value="Bindings_MousePitch" />
+	<MultiCrewThirdPersonMouseYDecay Value="0" />
+	<MultiCrewThirdPersonYawAxisRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</MultiCrewThirdPersonYawAxisRaw>
+	<MultiCrewThirdPersonYawLeftButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MultiCrewThirdPersonYawLeftButton>
+	<MultiCrewThirdPersonYawRightButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MultiCrewThirdPersonYawRightButton>
+	<MultiCrewThirdPersonPitchAxisRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</MultiCrewThirdPersonPitchAxisRaw>
+	<MultiCrewThirdPersonPitchUpButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MultiCrewThirdPersonPitchUpButton>
+	<MultiCrewThirdPersonPitchDownButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MultiCrewThirdPersonPitchDownButton>
+	<MultiCrewThirdPersonMouseSensitivity Value="30.00000000" />
+	<MultiCrewThirdPersonFovAxisRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</MultiCrewThirdPersonFovAxisRaw>
+	<MultiCrewThirdPersonFovOutButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MultiCrewThirdPersonFovOutButton>
+	<MultiCrewThirdPersonFovInButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MultiCrewThirdPersonFovInButton>
+	<MultiCrewCockpitUICycleForward>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MultiCrewCockpitUICycleForward>
+	<MultiCrewCockpitUICycleBackward>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MultiCrewCockpitUICycleBackward>
+	<OrderRequestDock>
+		<Primary Device="Keyboard" Key="Key_Numpad_0" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</OrderRequestDock>
+	<OrderDefensiveBehaviour>
+		<Primary Device="Keyboard" Key="Key_Numpad_1" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</OrderDefensiveBehaviour>
+	<OrderAggressiveBehaviour>
+		<Primary Device="Keyboard" Key="Key_Numpad_2" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</OrderAggressiveBehaviour>
+	<OrderFocusTarget>
+		<Primary Device="Keyboard" Key="Key_Numpad_3" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</OrderFocusTarget>
+	<OrderHoldFire>
+		<Primary Device="Keyboard" Key="Key_Numpad_4" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</OrderHoldFire>
+	<OrderHoldPosition>
+		<Primary Device="Keyboard" Key="Key_Numpad_5" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</OrderHoldPosition>
+	<OrderFollow>
+		<Primary Device="Keyboard" Key="Key_Numpad_6" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</OrderFollow>
+	<OpenOrders>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</OpenOrders>
+	<PhotoCameraToggle>
+		<Primary Device="Keyboard" Key="Key_Space">
+			<Modifier Device="Keyboard" Key="Key_LeftControl" />
+			<Modifier Device="Keyboard" Key="Key_LeftAlt" />
+		</Primary>
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</PhotoCameraToggle>
+	<PhotoCameraToggle_Buggy>
+		<Primary Device="Keyboard" Key="Key_Space">
+			<Modifier Device="Keyboard" Key="Key_LeftControl" />
+			<Modifier Device="Keyboard" Key="Key_LeftAlt" />
+		</Primary>
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</PhotoCameraToggle_Buggy>
+	<PhotoCameraToggle_Humanoid>
+		<Primary Device="Keyboard" Key="Key_Space">
+			<Modifier Device="Keyboard" Key="Key_LeftControl" />
+			<Modifier Device="Keyboard" Key="Key_LeftAlt" />
+		</Primary>
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</PhotoCameraToggle_Humanoid>
+	<VanityCameraScrollLeft>
+		<Primary Device="Keyboard" Key="Key_LeftArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</VanityCameraScrollLeft>
+	<VanityCameraScrollRight>
+		<Primary Device="Keyboard" Key="Key_RightArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</VanityCameraScrollRight>
+	<ToggleFreeCam>
+		<Primary Device="Keyboard" Key="Key_Numpad_0" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ToggleFreeCam>
+	<VanityCameraOne>
+		<Primary Device="Keyboard" Key="Key_Numpad_1" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</VanityCameraOne>
+	<VanityCameraTwo>
+		<Primary Device="Keyboard" Key="Key_Numpad_2" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</VanityCameraTwo>
+	<VanityCameraThree>
+		<Primary Device="Keyboard" Key="Key_Numpad_3" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</VanityCameraThree>
+	<VanityCameraFour>
+		<Primary Device="Keyboard" Key="Key_Numpad_4" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</VanityCameraFour>
+	<VanityCameraFive>
+		<Primary Device="Keyboard" Key="Key_Numpad_5" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</VanityCameraFive>
+	<VanityCameraSix>
+		<Primary Device="Keyboard" Key="Key_Numpad_6" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</VanityCameraSix>
+	<VanityCameraSeven>
+		<Primary Device="Keyboard" Key="Key_Numpad_7" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</VanityCameraSeven>
+	<VanityCameraEight>
+		<Primary Device="Keyboard" Key="Key_Numpad_8" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</VanityCameraEight>
+	<VanityCameraNine>
+		<Primary Device="Keyboard" Key="Key_Numpad_9" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</VanityCameraNine>
+	<VanityCameraTen>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</VanityCameraTen>
+	<FreeCamToggleHUD>
+		<Primary Device="Keyboard" Key="Key_LeftControl" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FreeCamToggleHUD>
+	<FreeCamSpeedInc>
+		<Primary Device="Keyboard" Key="Key_Equals" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FreeCamSpeedInc>
+	<FreeCamSpeedDec>
+		<Primary Device="Keyboard" Key="Key_Minus" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FreeCamSpeedDec>
+	<MoveFreeCamY>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</MoveFreeCamY>
+	<ThrottleRangeFreeCam Value="" />
+	<ToggleReverseThrottleInputFreeCam>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="0" />
+	</ToggleReverseThrottleInputFreeCam>
+	<MoveFreeCamForward>
+		<Primary Device="Keyboard" Key="Key_W" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MoveFreeCamForward>
+	<MoveFreeCamBackwards>
+		<Primary Device="Keyboard" Key="Key_S" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MoveFreeCamBackwards>
+	<MoveFreeCamX>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</MoveFreeCamX>
+	<MoveFreeCamRight>
+		<Primary Device="Keyboard" Key="Key_D" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MoveFreeCamRight>
+	<MoveFreeCamLeft>
+		<Primary Device="Keyboard" Key="Key_A" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MoveFreeCamLeft>
+	<MoveFreeCamZ>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</MoveFreeCamZ>
+	<MoveFreeCamUpAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</MoveFreeCamUpAxis>
+	<MoveFreeCamDownAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</MoveFreeCamDownAxis>
+	<MoveFreeCamUp>
+		<Primary Device="Keyboard" Key="Key_R" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MoveFreeCamUp>
+	<MoveFreeCamDown>
+		<Primary Device="Keyboard" Key="Key_F" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</MoveFreeCamDown>
+	<PitchCameraMouse Value="Bindings_MousePitchInverted" />
+	<YawCameraMouse Value="Bindings_MouseYaw" />
+	<PitchCamera>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="1" />
+		<Deadzone Value="0.00000000" />
+	</PitchCamera>
+	<FreeCamMouseSensitivity Value="5.00000000" />
+	<FreeCamMouseYDecay Value="1" />
+	<PitchCameraUp>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</PitchCameraUp>
+	<PitchCameraDown>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</PitchCameraDown>
+	<YawCamera>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</YawCamera>
+	<FreeCamMouseXDecay Value="1" />
+	<YawCameraLeft>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</YawCameraLeft>
+	<YawCameraRight>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</YawCameraRight>
+	<RollCamera>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</RollCamera>
+	<RollCameraLeft>
+		<Primary Device="Keyboard" Key="Key_Q" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</RollCameraLeft>
+	<RollCameraRight>
+		<Primary Device="Keyboard" Key="Key_E" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</RollCameraRight>
+	<ToggleRotationLock>
+		<Primary Device="Keyboard" Key="Key_End" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ToggleRotationLock>
+	<FixCameraRelativeToggle>
+		<Primary Device="Keyboard" Key="Key_Numpad_0" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FixCameraRelativeToggle>
+	<FixCameraWorldToggle>
+		<Primary Device="Keyboard" Key="Key_Space" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FixCameraWorldToggle>
+	<QuitCamera>
+		<Primary Device="Keyboard" Key="Key_Backspace" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</QuitCamera>
+	<ToggleAdvanceMode>
+		<Primary Device="Keyboard" Key="Key_Delete" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ToggleAdvanceMode>
+	<FreeCamZoomIn>
+		<Primary Device="Keyboard" Key="Key_UpArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FreeCamZoomIn>
+	<FreeCamZoomOut>
+		<Primary Device="Keyboard" Key="Key_DownArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FreeCamZoomOut>
+	<FStopDec>
+		<Primary Device="Keyboard" Key="Key_LeftArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FStopDec>
+	<FStopInc>
+		<Primary Device="Keyboard" Key="Key_RightArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FStopInc>
+	<CommanderCreator_Undo>
+		<Primary Device="Keyboard" Key="Key_Z" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CommanderCreator_Undo>
+	<CommanderCreator_Redo>
+		<Primary Device="Keyboard" Key="Key_X" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CommanderCreator_Redo>
+	<CommanderCreator_Rotation_MouseToggle>
+		<Primary Device="Mouse" Key="Mouse_2" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</CommanderCreator_Rotation_MouseToggle>
+	<CommanderCreator_Rotation>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="1" />
+		<Deadzone Value="0.00000000" />
+	</CommanderCreator_Rotation>
+	<GalnetAudio_Play_Pause>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</GalnetAudio_Play_Pause>
+	<GalnetAudio_SkipForward>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</GalnetAudio_SkipForward>
+	<GalnetAudio_SkipBackward>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</GalnetAudio_SkipBackward>
+	<GalnetAudio_ClearQueue>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</GalnetAudio_ClearQueue>
+	<ExplorationFSSCameraPitch>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</ExplorationFSSCameraPitch>
+	<ExplorationFSSCameraPitchIncreaseButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationFSSCameraPitchIncreaseButton>
+	<ExplorationFSSCameraPitchDecreaseButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationFSSCameraPitchDecreaseButton>
+	<ExplorationFSSCameraYaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</ExplorationFSSCameraYaw>
+	<ExplorationFSSCameraYawIncreaseButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationFSSCameraYawIncreaseButton>
+	<ExplorationFSSCameraYawDecreaseButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationFSSCameraYawDecreaseButton>
+	<ExplorationFSSZoomIn>
+		<Primary Device="Mouse" Key="Mouse_1" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationFSSZoomIn>
+	<ExplorationFSSZoomOut>
+		<Primary Device="Mouse" Key="Mouse_2" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationFSSZoomOut>
+	<ExplorationFSSMiniZoomIn>
+		<Primary Device="Keyboard" Key="Key_UpArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationFSSMiniZoomIn>
+	<ExplorationFSSMiniZoomOut>
+		<Primary Device="Keyboard" Key="Key_DownArrow" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationFSSMiniZoomOut>
+	<ExplorationFSSRadioTuningX_Raw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</ExplorationFSSRadioTuningX_Raw>
+	<ExplorationFSSRadioTuningX_Increase>
+		<Primary Device="Keyboard" Key="Key_D" />
+		<Secondary Device="Keyboard" Key="Key_RightBracket" />
+	</ExplorationFSSRadioTuningX_Increase>
+	<ExplorationFSSRadioTuningX_Decrease>
+		<Primary Device="Keyboard" Key="Key_A" />
+		<Secondary Device="Keyboard" Key="Key_LeftBracket" />
+	</ExplorationFSSRadioTuningX_Decrease>
+	<ExplorationFSSRadioTuningAbsoluteX>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</ExplorationFSSRadioTuningAbsoluteX>
+	<FSSTuningSensitivity Value="1.00000000" />
+	<ExplorationFSSDiscoveryScan>
+		<Primary Device="Mouse" Key="Mouse_3" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationFSSDiscoveryScan>
+	<ExplorationFSSQuit>
+		<Primary Device="Keyboard" Key="Key_Backspace" />
+		<Secondary Device="Keyboard" Key="Key_Apostrophe" />
+	</ExplorationFSSQuit>
+	<FSSMouseXMode Value="Bindings_MouseYaw" />
+	<FSSMouseXDecay Value="1" />
+	<FSSMouseYMode Value="Bindings_MousePitchInverted" />
+	<FSSMouseYDecay Value="1" />
+	<FSSMouseSensitivity Value="7.00000000" />
+	<FSSMouseDeadzone Value="0.00000000" />
+	<FSSMouseLinearity Value="1.00000000" />
+	<ExplorationFSSTarget>
+		<Primary Device="Keyboard" Key="Key_T" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationFSSTarget>
+	<ExplorationFSSShowHelp>
+		<Primary Device="Keyboard" Key="Key_H" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationFSSShowHelp>
+	<ExplorationSAAChangeScannedAreaViewToggle>
+		<Primary Device="Mouse" Key="Mouse_3" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="0" />
+	</ExplorationSAAChangeScannedAreaViewToggle>
+	<ExplorationSAAExitThirdPerson>
+		<Primary Device="Keyboard" Key="Key_Backspace" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationSAAExitThirdPerson>
+	<ExplorationSAANextGenus>
+		<Primary Device="Keyboard" Key="Key_E" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationSAANextGenus>
+	<ExplorationSAAPreviousGenus>
+		<Primary Device="Keyboard" Key="Key_Q" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</ExplorationSAAPreviousGenus>
+	<SAAThirdPersonMouseXMode Value="Bindings_MouseYaw" />
+	<SAAThirdPersonMouseXDecay Value="0" />
+	<SAAThirdPersonMouseYMode Value="Bindings_MousePitch" />
+	<SAAThirdPersonMouseYDecay Value="0" />
+	<SAAThirdPersonMouseSensitivity Value="5.00000000" />
+	<SAAThirdPersonYawAxisRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</SAAThirdPersonYawAxisRaw>
+	<SAAThirdPersonYawLeftButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SAAThirdPersonYawLeftButton>
+	<SAAThirdPersonYawRightButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SAAThirdPersonYawRightButton>
+	<SAAThirdPersonPitchAxisRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</SAAThirdPersonPitchAxisRaw>
+	<SAAThirdPersonPitchUpButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SAAThirdPersonPitchUpButton>
+	<SAAThirdPersonPitchDownButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SAAThirdPersonPitchDownButton>
+	<SAAThirdPersonFovAxisRaw>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</SAAThirdPersonFovAxisRaw>
+	<SAAThirdPersonFovOutButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SAAThirdPersonFovOutButton>
+	<SAAThirdPersonFovInButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SAAThirdPersonFovInButton>
+	<MouseHumanoidXMode Value="Bindings_MouseYaw" />
+	<MouseHumanoidYMode Value="Bindings_MousePitch" />
+	<MouseHumanoidSensitivity Value="3.00000000" />
+	<HumanoidForwardAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</HumanoidForwardAxis>
+	<HumanoidForwardButton>
+		<Primary Device="Keyboard" Key="Key_W" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidForwardButton>
+	<HumanoidBackwardButton>
+		<Primary Device="Keyboard" Key="Key_S" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidBackwardButton>
+	<HumanoidStrafeAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</HumanoidStrafeAxis>
+	<HumanoidStrafeLeftButton>
+		<Primary Device="Keyboard" Key="Key_A" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidStrafeLeftButton>
+	<HumanoidStrafeRightButton>
+		<Primary Device="Keyboard" Key="Key_D" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidStrafeRightButton>
+	<HumanoidRotateAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</HumanoidRotateAxis>
+	<HumanoidRotateSensitivity Value="1.00000000" />
+	<HumanoidRotateLeftButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidRotateLeftButton>
+	<HumanoidRotateRightButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidRotateRightButton>
+	<HumanoidPitchAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</HumanoidPitchAxis>
+	<HumanoidPitchSensitivity Value="0.55000001" />
+	<HumanoidPitchUpButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidPitchUpButton>
+	<HumanoidPitchDownButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidPitchDownButton>
+	<HumanoidSprintButton>
+		<Primary Device="Keyboard" Key="Key_LeftShift" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="1" />
+	</HumanoidSprintButton>
+	<HumanoidWalkButton>
+		<Primary Device="Keyboard" Key="Key_Slash" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="1" />
+	</HumanoidWalkButton>
+	<HumanoidCrouchButton>
+		<Primary Device="Keyboard" Key="Key_LeftControl" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="1" />
+	</HumanoidCrouchButton>
+	<HumanoidJumpButton>
+		<Primary Device="Keyboard" Key="Key_Space" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidJumpButton>
+	<HumanoidPrimaryInteractButton>
+		<Primary Device="Keyboard" Key="Key_E" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidPrimaryInteractButton>
+	<HumanoidSecondaryInteractButton>
+		<Primary Device="Keyboard" Key="Key_F" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSecondaryInteractButton>
+	<HumanoidItemWheelButton>
+		<Primary Device="Keyboard" Key="Key_LeftAlt">
+			<Hold Value="1" />
+		</Primary>
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="0" />
+	</HumanoidItemWheelButton>
+	<HumanoidEmoteWheelButton>
+		<Primary Device="Keyboard" Key="Key_B">
+			<Hold Value="1" />
+		</Primary>
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="0" />
+	</HumanoidEmoteWheelButton>
+	<HumanoidUtilityWheelCycleMode>
+		<Primary Device="Mouse" Key="Mouse_2" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidUtilityWheelCycleMode>
+	<HumanoidItemWheelButton_XAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.40000001" />
+	</HumanoidItemWheelButton_XAxis>
+	<HumanoidItemWheelButton_XLeft>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidItemWheelButton_XLeft>
+	<HumanoidItemWheelButton_XRight>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidItemWheelButton_XRight>
+	<HumanoidItemWheelButton_YAxis>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="1" />
+		<Deadzone Value="0.40000001" />
+	</HumanoidItemWheelButton_YAxis>
+	<HumanoidItemWheelButton_YUp>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidItemWheelButton_YUp>
+	<HumanoidItemWheelButton_YDown>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidItemWheelButton_YDown>
+	<HumanoidItemWheel_AcceptMouseInput Value="1" />
+	<HumanoidPrimaryFireButton>
+		<Primary Device="Mouse" Key="Mouse_1" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidPrimaryFireButton>
+	<HumanoidZoomButton>
+		<Primary Device="Mouse" Key="Mouse_2" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<ToggleOn Value="0" />
+	</HumanoidZoomButton>
+	<HumanoidThrowGrenadeButton>
+		<Primary Device="Keyboard" Key="Key_X" />
+		<Secondary Device="Keyboard" Key="Key_G" />
+	</HumanoidThrowGrenadeButton>
+	<HumanoidMeleeButton>
+		<Primary Device="Keyboard" Key="Key_V" />
+		<Secondary Device="Mouse" Key="Mouse_3" />
+	</HumanoidMeleeButton>
+	<HumanoidReloadButton>
+		<Primary Device="Keyboard" Key="Key_R" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidReloadButton>
+	<HumanoidSwitchWeapon>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSwitchWeapon>
+	<HumanoidSelectPrimaryWeaponButton>
+		<Primary Device="Keyboard" Key="Key_1" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSelectPrimaryWeaponButton>
+	<HumanoidSelectSecondaryWeaponButton>
+		<Primary Device="Keyboard" Key="Key_2" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSelectSecondaryWeaponButton>
+	<HumanoidSelectUtilityWeaponButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSelectUtilityWeaponButton>
+	<HumanoidSelectNextWeaponButton>
+		<Primary Device="Mouse" Key="Neg_Mouse_ZAxis" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSelectNextWeaponButton>
+	<HumanoidSelectPreviousWeaponButton>
+		<Primary Device="Mouse" Key="Pos_Mouse_ZAxis" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSelectPreviousWeaponButton>
+	<HumanoidHideWeaponButton>
+		<Primary Device="Keyboard" Key="Key_U" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidHideWeaponButton>
+	<HumanoidSelectNextGrenadeTypeButton>
+		<Primary Device="Keyboard" Key="Key_Tab" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSelectNextGrenadeTypeButton>
+	<HumanoidSelectPreviousGrenadeTypeButton>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSelectPreviousGrenadeTypeButton>
+	<HumanoidToggleFlashlightButton>
+		<Primary Device="Keyboard" Key="Key_T" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidToggleFlashlightButton>
+	<HumanoidToggleNightVisionButton>
+		<Primary Device="Keyboard" Key="Key_N" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidToggleNightVisionButton>
+	<HumanoidToggleShieldsButton>
+		<Primary Device="Keyboard" Key="Key_C" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidToggleShieldsButton>
+	<HumanoidClearAuthorityLevel>
+		<Primary Device="Keyboard" Key="Key_Minus" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidClearAuthorityLevel>
+	<HumanoidHealthPack>
+		<Primary Device="Keyboard" Key="Key_6" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidHealthPack>
+	<HumanoidBattery>
+		<Primary Device="Keyboard" Key="Key_7" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidBattery>
+	<HumanoidSelectFragGrenade>
+		<Primary Device="Keyboard" Key="Key_8" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSelectFragGrenade>
+	<HumanoidSelectEMPGrenade>
+		<Primary Device="Keyboard" Key="Key_9" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSelectEMPGrenade>
+	<HumanoidSelectShieldGrenade>
+		<Primary Device="Keyboard" Key="Key_0" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSelectShieldGrenade>
+	<HumanoidSwitchToRechargeTool>
+		<Primary Device="Keyboard" Key="Key_3" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSwitchToRechargeTool>
+	<HumanoidSwitchToCompAnalyser>
+		<Primary Device="Keyboard" Key="Key_4" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSwitchToCompAnalyser>
+	<HumanoidSwitchToSuitTool>
+		<Primary Device="Keyboard" Key="Key_5" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidSwitchToSuitTool>
+	<HumanoidToggleToolModeButton>
+		<Primary Device="Keyboard" Key="Key_R" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidToggleToolModeButton>
+	<HumanoidToggleMissionHelpPanelButton>
+		<Primary Device="Keyboard" Key="Key_E" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidToggleMissionHelpPanelButton>
+	<HumanoidPing>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidPing>
+	<GalaxyMapOpen_Humanoid>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</GalaxyMapOpen_Humanoid>
+	<SystemMapOpen_Humanoid>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</SystemMapOpen_Humanoid>
+	<FocusCommsPanel_Humanoid>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</FocusCommsPanel_Humanoid>
+	<QuickCommsPanel_Humanoid>
+		<Primary Device="Keyboard" Key="Key_Enter" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</QuickCommsPanel_Humanoid>
+	<HumanoidOpenAccessPanelButton>
+		<Primary Device="Keyboard" Key="Key_Q">
+			<Hold Value="1" />
+		</Primary>
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidOpenAccessPanelButton>
+	<HumanoidConflictContextualUIButton>
+		<Primary Device="Keyboard" Key="Key_E" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidConflictContextualUIButton>
+	<EnableMenuGroupsOnFoot Value="0" />
+	<StoreEnableRotation>
+		<Primary Device="Mouse" Key="Mouse_3" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</StoreEnableRotation>
+	<StorePitchCamera>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</StorePitchCamera>
+	<StoreYawCamera>
+		<Binding Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Inverted Value="0" />
+		<Deadzone Value="0.00000000" />
+	</StoreYawCamera>
+	<StoreCamZoomIn>
+		<Primary Device="Keyboard" Key="Key_X" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</StoreCamZoomIn>
+	<StoreCamZoomOut>
+		<Primary Device="Keyboard" Key="Key_Z" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</StoreCamZoomOut>
+	<StoreToggle>
+		<Primary Device="Keyboard" Key="Key_Tab" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</StoreToggle>
+	<HumanoidEmoteSlot1>
+		<Primary Device="Keyboard" Key="Key_B" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidEmoteSlot1>
+	<HumanoidEmoteSlot2>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidEmoteSlot2>
+	<HumanoidEmoteSlot3>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidEmoteSlot3>
+	<HumanoidEmoteSlot4>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidEmoteSlot4>
+	<HumanoidEmoteSlot5>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidEmoteSlot5>
+	<HumanoidEmoteSlot6>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidEmoteSlot6>
+	<HumanoidEmoteSlot7>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidEmoteSlot7>
+	<HumanoidEmoteSlot8>
+		<Primary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+		<Secondary Device="{150D55D0-D984-11EE-8001-444553540000}" Key="" />
+	</HumanoidEmoteSlot8>
+</Root>
