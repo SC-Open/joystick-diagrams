@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        python-version: [3.11]
+        python-version: [3.12]
 
     steps:
     - uses: actions/checkout@v2
@@ -25,6 +25,9 @@ jobs:
         python -m pip install poetry
         poetry shell
         poetry install
+    - name: Install Inno Setup
+      run: |
+        choco install innosetup
     - name: Build Package
       run: |
         make build-exe
