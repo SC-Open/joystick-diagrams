@@ -11,13 +11,12 @@
 		"vscode": {
 			"extensions": [
 				"redhat.vscode-xml",
-				"ms-vscode.makefile-tools",
 				"ms-python.debugpy",
 				"ms-python.python",
 				"ms-python.vscode-pylance"
 			]
 		}
-	}
+	},
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -27,6 +26,7 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "pip3 install --user -r requirements.txt",
+	"postCreateCommand": "/bin/bash -c 'poetry install && source /workspaces/joystick-diagrams/.venv/bin/activate && pre-commit install'"
 
 	// Configure tool-specific properties.
 	// "customizations": {},
