@@ -3,13 +3,9 @@
 import logging
 import os
 from pathlib import Path
-from typing import Union
 from xml.dom import minidom
 from xml.etree import ElementTree
 
-from joystick_diagrams.input.axis import Axis, AxisSlider
-from joystick_diagrams.input.button import Button
-from joystick_diagrams.input.hat import Hat  #, HatDirection
 from joystick_diagrams.input.profile_collection import ProfileCollection
 
 _logger = logging.getLogger(__name__)
@@ -241,21 +237,21 @@ class EliteDangerous:
 
         return collection
 
-    def get_profile_name_map(name: str) -> str:
-        """Return a mapped profile name  for a given name.
+def get_profile_name_map(name: str) -> str:
+    """Return a mapped profile name  for a given name.
 
-        Allows multiple profiles to be grouped into one
-        """
-        _name = PROFILE_MAPPINGS.get(name)
+    Allows multiple profiles to be grouped into one
+    """
+    _name = PROFILE_MAPPINGS.get(name)
 
-        # Handle unexpected new mappings with default
-        if _name is None:
-            _logger.warning(
-                f"No map found for a Elite Dangerous profile {name}. This should be raised as a bug."
-            )
-            _name = "Spaceship"
+    # Handle unexpected new mappings with default
+    if _name is None:
+        _logger.warning(
+            f"No map found for a Elite Dangerous profile {name}. This should be raised as a bug."
+        )
+        _name = "Spaceship"
 
-        return _name
+    return _name
 
 if __name__ == "__main__":
     #ed = EliteDangerous("Custom.4.0.binds")

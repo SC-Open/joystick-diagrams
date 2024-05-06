@@ -2,6 +2,7 @@ import pytest
 
 import joystick_diagrams.plugins.elite_dangerous_plugin.elite_dangerous as ed
 
+
 def test_empty_file():
     with pytest.raises(Exception) as context:
         ed.EliteDangerous("./tests/data/elite_dangerous/empty.xml")
