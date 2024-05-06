@@ -11,7 +11,6 @@ from joystick_diagrams.input.axis import Axis, AxisSlider
 from joystick_diagrams.input.button import Button
 from joystick_diagrams.input.hat import Hat  #, HatDirection
 from joystick_diagrams.input.profile_collection import ProfileCollection
-from joystick_diagrams.utils import resolve_bind
 
 _logger = logging.getLogger(__name__)
 
@@ -176,41 +175,12 @@ class EliteDangerous:
 
         return self.get_human_readable_name(name)
 
-    def resolve_input(
-        self, input_str: str
-    ) -> tuple[dict[str, str], Union[Axis, Button, Hat, AxisSlider], str | None] | None:
-        """Resolve an INPUT string to the a device/binding.
-
-        Returns (device id, bind string, modifiers)
-        """
-        input_str = input_str.strip()
-
-        _device_id, _binding = input_str[0:3], input_str[4:]
-
-        # Resolve the devices and create in the profile if needed
-        device_lookup = self.devices.get(_device_id)
-
-        if not device_lookup:
-            _logger.error("A device was not found in the valid list of devices.")
-            return None
-
-        if not _binding:  # Handles "jsX_ " scenario no mapping
-            return None
-
-        _modifiers, _resolved_bind = resolve_bind(_binding)
-
-        if not _resolved_bind:
-            _logger.error("Bind could not be resolved for {_binding}")
-            return None
-
-        return (device_lookup, _resolved_bind, _modifiers)
-
     def create_device_lookup(self, options) -> None:
         """Create lookup table for bind strings to resolve easier."""
         _prefixes = {
             "joystick": "js",
-            # "keyboard": "kb", - Not Supported
-            # "mouse": "mo", - Not Supported
+            # "keyboard": "Keyboard", - Not Supported
+            # "mouse": "Mouse", - Not Supported
             # "gamepad": "gp" - Not Supported
         }
 
@@ -271,21 +241,21 @@ class EliteDangerous:
 
         return collection
 
-def get_profile_name_map(name: str) -> str:
-    """Return a mapped profile name  for a given name.
+    def get_profile_name_map(name: str) -> str:
+        """Return a mapped profile name  for a given name.
 
-    Allows multiple profiles to be grouped into one
-    """
-    _name = PROFILE_MAPPINGS.get(name)
+        Allows multiple profiles to be grouped into one
+        """
+        _name = PROFILE_MAPPINGS.get(name)
 
-    # Handle unexpected new mappings with default
-    if _name is None:
-        _logger.warning(
-            f"No map found for a Elite Dangerous profile {name}. This should be raised as a bug."
-        )
-        _name = "Spaceship"
+        # Handle unexpected new mappings with default
+        if _name is None:
+            _logger.warning(
+                f"No map found for a Elite Dangerous profile {name}. This should be raised as a bug."
+            )
+            _name = "Spaceship"
 
-    return _name
+        return _name
 
 if __name__ == "__main__":
     #ed = EliteDangerous("Custom.4.0.binds")
