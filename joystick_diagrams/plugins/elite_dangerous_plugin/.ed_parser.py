@@ -1,9 +1,10 @@
 import argparse
-import xml.etree.ElementTree as ET
 import json
+from xml.etree import ElementTree
+
 
 def parse_elite_dangerous_binds(file_path):
-    tree = ET.parse(file_path)
+    tree = ElementTree.parse(file_path)
     root = tree.getroot()
 
     binds = {}

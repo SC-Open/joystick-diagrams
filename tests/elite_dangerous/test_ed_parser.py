@@ -3,10 +3,11 @@ import unittest
 import joystick_diagrams.plugins.elite_dangerous_plugin.elite_dangerous as ed
 from joystick_diagrams.input.profile_collection import ProfileCollection
 
+
 class TestEDParserCases(unittest.TestCase):
     def setUp(self):
         self.file = ed.EliteDangerous("./tests/data/elite_dangerous/Custom.4.0_valid.binds")
-    
+
     def test_parse(self):
         result = self.file.parse()
         self.assertIsInstance(result, ProfileCollection)
@@ -17,7 +18,7 @@ class TestEDParserCases(unittest.TestCase):
         # Check that each profile has at least one bind
         for profile in result.profiles.values():
             self.assertNotEqual(len(profile.keybindings), 0, f"Profile {profile.name} has no keybinds")
-        
+
 
     def test_bind_parse_button(self):
         # ("js1_button1")

@@ -5,13 +5,13 @@ import os
 from pathlib import Path
 from typing import Union
 from xml.dom import minidom
-import xml.etree.ElementTree as ET
+from xml.etree import ElementTree
 
-from joystick_diagrams.input.axis import Axis, AxisDirection, AxisSlider
+from joystick_diagrams.input.axis import Axis, AxisSlider
 from joystick_diagrams.input.button import Button
-from joystick_diagrams.input.hat import Hat, HatDirection
+from joystick_diagrams.input.hat import Hat  #, HatDirection
 from joystick_diagrams.input.profile_collection import ProfileCollection
-from collections import defaultdict
+from joystick_diagrams.utils import resolve_bind
 
 _logger = logging.getLogger(__name__)
 
@@ -123,25 +123,23 @@ class EliteDangerous:
                 "Options",
                 "Bindings",
                 self.file_path,
-            )    
-        else:
-            if os.path.exists(self.file_path):
-                if (os.path.splitext(self.file_path))[1] in [".binds", ".xml"]:
-                    data = Path(self.file_path).read_text(encoding="utf-8")
-                    try:
-                        self.__validate_file(data)
-                    except Exception as e:
-                        raise Exception(
-                            "File is not a valid Elite Dangerous XML"
-                        ) from e  # TODO remove base exception
-                    else:
-                        return data
-                else:
+            )
+        if os.path.exists(file_path):
+            if (os.path.splitext(self.file_path))[1] in [".binds", ".xml"]:
+                data = Path(self.file_path).read_text(encoding="utf-8")
+                try:
+                    self.__validate_file(data)
+                except Exception as e:
                     raise Exception(
-                        "File must be an XML file"
-                    )  # TODO remove base exception
-            else:
-                raise FileNotFoundError("File not found")
+                        "File is not a valid Elite Dangerous XML"
+                    ) from e  # TODO remove base exception
+                return data
+            elif (os.path.splitext(file_path))[1] not in [".binds", ".xml"]:
+                raise Exception(
+                    "File must be an XML file"
+                )  # TODO remove base exception
+        else:
+            raise FileNotFoundError("File not found")
 
     def __validate_file(self, data) -> bool:
         try:
@@ -240,7 +238,6 @@ class EliteDangerous:
         _logger.debug(f"Created device lookups: {self.devices} ")
 
     # Additional Parsing Functions
-
     def handle_key_press(self, key):
         action = self.keybindings.get(key)
         if action:
@@ -255,10 +252,10 @@ class EliteDangerous:
 
     def update_keybinding(self, key, new_action):
         self.keybindings[key] = new_action
-   
+
+    # Parse XML Data
     def parse(self) -> ProfileCollection:
-        # Parse XML Data
-        root = ET.fromstring(self.data)
+        root = ElementTree.fromstring(self.data)
         collection = ProfileCollection()
         profile = collection.create_profile("Elite Dangerous")
         # For each 'Primary', 'Secondary', and 'Binding' element in the XML

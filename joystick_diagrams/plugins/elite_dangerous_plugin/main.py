@@ -3,12 +3,12 @@ import logging
 from pathlib import Path
 
 from joystick_diagrams.input.profile_collection import ProfileCollection
-from joystick_diagrams.plugins.elite_dangerous_plugin.elite_dangerous import EliteDangerous
+from joystick_diagrams.plugins.elite_dangerous_plugin.elite_dangerous import (
+    EliteDangerous,
+)
 from joystick_diagrams.plugins.plugin_interface import PluginInterface
 
 from .config import settings
-from .elite_dangerous import EliteDangerous
-
 
 CONFIG_FILE = "data.json"
 _logger = logging.getLogger("__name__")
@@ -57,7 +57,7 @@ class ParserPlugin(PluginInterface):
     def path_type(self):
         return self.FilePath(
             "Select your Elite Dangerous Custom.4.0.binds",
-            Path.home(),
+            self.instance.file_path if self.instance else Path.home(),
             [".binds"],
         )
 
