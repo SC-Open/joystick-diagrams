@@ -91,6 +91,7 @@ PROFILE_MAPPINGS = {
     "HumanoidEmoteSlot8": "Humanoid",
 }
 
+
 class EliteDangerous:
     def __init__(self, file_path):
         self.file_path = file_path
@@ -119,7 +120,7 @@ class EliteDangerous:
                 "Bindings",
                 self.file_path,
             )
-        if os.path.exists(file_path):
+        if file_path and os.path.exists(file_path):
             if (os.path.splitext(self.file_path))[1] in [".binds", ".xml"]:
                 data = Path(self.file_path).read_text(encoding="utf-8")
                 try:
@@ -225,17 +226,20 @@ class EliteDangerous:
         collection = ProfileCollection()
         profile = collection.create_profile("Elite Dangerous")
         # For each 'Primary', 'Secondary', and 'Binding' element in the XML
-        for tag in ['Primary', 'Secondary', 'Binding']:
+        for tag in ["Primary", "Secondary", "Binding"]:
             for action in root.iter(tag):
                 # Get the 'Device' and 'Key' attributes
-                device_name = action.get('Device')
-                key = action.get('Key')
+                device_name = action.get("Device")
+                key = action.get("Key")
                 # If both 'Device' and 'Key' are present
                 if device_name and key:
-                    device = profile.add_device('{150D55D0-D984-11EE-8001-444553540000}', device_name)
+                    device = profile.add_device(
+                        "{150D55D0-D984-11EE-8001-444553540000}", device_name
+                    )
                     device.create_input(key, action.text)
 
         return collection
+
 
 def get_profile_name_map(name: str) -> str:
     """Return a mapped profile name  for a given name.
@@ -253,7 +257,8 @@ def get_profile_name_map(name: str) -> str:
 
     return _name
 
+
 if __name__ == "__main__":
-    #ed = EliteDangerous("Custom.4.0.binds")
-    #print(ed.keybindings)
+    # ed = EliteDangerous("Custom.4.0.binds")
+    # print(ed.keybindings)
     pass
