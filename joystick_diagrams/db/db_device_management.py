@@ -42,7 +42,7 @@ def remove_template_path_from_device(guid: str):
     con = connection()
     cur = con.cursor()
     cur.execute("UPDATE devices SET template_path = NULL WHERE guid =  ?", (guid,))
-    connection().commit()
+    con.commit()
 
 
 def add_update_device_template_path(guid: str, template_path: str) -> bool:
