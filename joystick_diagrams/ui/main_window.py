@@ -249,13 +249,7 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
 
     def check_for_new_version(self):
         _logger.info("Checking version...")
-        version_check = version.perform_version_check()
-        _logger.info(f"Version check was {version_check}")
-
-        if version_check is False:
-            self.statusLabel.setText(
-                "An update is available! Visit joystick-diagrams.com"
-            )
+        self._check_for_updates()
 
     def set_style(self):
         stylesheet = self.app.styleSheet()
