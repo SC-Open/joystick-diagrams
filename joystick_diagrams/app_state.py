@@ -131,6 +131,7 @@ class AppState:
             The profile with aliases resolved.
         """
         items = list(profile.devices.items())
+        original_count = len(items)
         new_devices = {}
 
         for guid, device in items:
@@ -139,16 +140,28 @@ class AppState:
             if canonical in new_devices:
                 # Merge source inputs into existing device; existing bindings win
                 existing_device = new_devices[canonical]
+                merged_count = 0
                 for input_type, inputs in device.inputs.items():
                     for input_key, input_ in inputs.items():
                         if input_key not in existing_device.inputs[input_type]:
                             existing_device.inputs[input_type][input_key] = deepcopy(
                                 input_
                             )
+                            merged_count += 1
+                _logger.debug(
+                    f"Merged device {guid[:8]} into existing {canonical[:8]}, added {merged_count} inputs"
+                )
             else:
+                if canonical != guid:
+                    _logger.debug(
+                        f"Aliased device {guid[:8]} -> {canonical[:8]} in profile {profile.name}"
+                    )
                 device.guid = canonical
                 new_devices[canonical] = device
 
+        _logger.debug(
+            f"Alias resolution complete for {profile.name}: {original_count} devices -> {len(new_devices)} devices"
+        )
         profile.devices = new_devices
         return profile
 
