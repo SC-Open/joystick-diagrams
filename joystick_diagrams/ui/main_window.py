@@ -3,10 +3,8 @@ import os
 
 import qtawesome as qta
 from PySide6.QtCore import QCoreApplication, QSize, Qt
-from PySide6.QtGui import QDesktopServices, QIcon
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
-    QCheckBox,
-    QFrame,
     QLabel,
     QMainWindow,
     QProgressBar,
@@ -93,42 +91,12 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
         self.statusLabel = QLabel()
         self.statusLabel.setText("Waiting...")
 
-        self.debug_mode = QCheckBox()
-        self.debug_mode.setText("Debug")
-        self.debug_mode.setChecked(False)
-        self.debug_mode.stateChanged.connect(self.handle_debug_mode_switch)
-
-        self.statusBar().addPermanentWidget(self.debug_mode)
         self.statusBar().addPermanentWidget(self.statusLabel, 1)
         self.statusBar().addPermanentWidget(self.progressBar, 1)
 
         # Nav bar setup
         self.topnav_layout.setSpacing(0)
         self.topnav_layout.setContentsMargins(0, 5, 0, 5)
-
-        self.discord_pill = QPushButton()
-        self.discord_pill.setIcon(qta.icon("fa5b.discord", color="#6B7280"))
-        self.discord_pill.setIconSize(QSize(16, 16))
-        self.discord_pill.setFixedSize(QSize(32, 32))
-        self.discord_pill.setToolTip("Discord Community")
-        self.discord_pill.setProperty("class", "nav-icon-button")
-
-        self.website_pill = QPushButton()
-        self.website_pill.setIcon(qta.icon("fa5s.globe", color="#6B7280"))
-        self.website_pill.setIconSize(QSize(16, 16))
-        self.website_pill.setFixedSize(QSize(32, 32))
-        self.website_pill.setToolTip("Joystick Diagrams Website")
-        self.website_pill.setProperty("class", "nav-icon-button")
-
-        self.update_pill = QPushButton()
-        self.update_pill.setText("An update is available!")
-        self.update_pill.setHidden(True)
-        self.update_pill.setIcon(QIcon(ui_consts.JD_ICON))
-        self.update_pill.setProperty("class", "pill-button update")
-
-        self.discord_pill.clicked.connect(self.open_discord_link)
-        self.website_pill.clicked.connect(self.open_website_link)
-        self.update_pill.clicked.connect(self.open_website_link)
 
         # Collapse the unused additional layout from Qt Designer
         self.topnav_additional_layout.setContentsMargins(0, 0, 0, 0)
@@ -187,22 +155,6 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
             self.settingsSectionButton, 0, Qt.AlignmentFlag.AlignVCenter
         )
 
-        # Separator between Settings and external links
-        nav_separator = QFrame()
-        nav_separator.setFrameShape(QFrame.Shape.VLine)
-        nav_separator.setFixedHeight(20)
-        nav_separator.setStyleSheet("color: #3C4043;")
-        self.topnav_layout.addWidget(nav_separator, 0, Qt.AlignmentFlag.AlignVCenter)
-
-        # External link icons — tertiary prominence
-        self.topnav_layout.addWidget(
-            self.discord_pill, 0, Qt.AlignmentFlag.AlignVCenter
-        )
-        self.topnav_layout.addWidget(
-            self.website_pill, 0, Qt.AlignmentFlag.AlignVCenter
-        )
-        self.topnav_layout.addWidget(self.update_pill, 0, Qt.AlignmentFlag.AlignVCenter)
-
         # Disable Additional Menu Controls
 
         self.additional_menus = [self.exportSectionButton, self.customiseSectionButton]
@@ -223,13 +175,9 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
         _logger.info(f"Version check was {version_check}")
 
         if version_check is False:
-            self.update_pill.setHidden(False)
-
-    def handle_debug_mode_switch(self, state):
-        if state == 2:
-            _logger.root.setLevel(logging.DEBUG)
-        else:
-            _logger.root.setLevel(logging.INFO)
+            self.statusLabel.setText(
+                "An update is available! Visit joystick-diagrams.com"
+            )
 
     def set_style(self):
         stylesheet = self.app.styleSheet()
@@ -237,12 +185,6 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
 
         with open(theme_path) as file:
             self.app.setStyleSheet(stylesheet + file.read().format(**os.environ))
-
-    def open_discord_link(self):
-        QDesktopServices.openUrl("https://discord.gg/UUyRUuX2dX")
-
-    def open_website_link(self):
-        QDesktopServices.openUrl("https://joystick-diagrams.com")
 
     def disable_additional_menus(self):
         for x in self.additional_menus:
