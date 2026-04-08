@@ -40,9 +40,13 @@ class ParserPlugin(PluginInterface):
     def _rebuild_instance(self) -> None:
         game_dir = self.get_setting("game_dir")
         if game_dir and Path(game_dir).exists():
-            self.instance = DCSWorldParser(
-                game_dir, easy_modes=self.get_setting("remove_easy_modes")
-            )
+            try:
+                self.instance = DCSWorldParser(
+                    game_dir, easy_modes=self.get_setting("remove_easy_modes")
+                )
+            except (FileNotFoundError, FileExistsError):
+                self.instance = None
+                raise
         else:
             self.instance = None
 

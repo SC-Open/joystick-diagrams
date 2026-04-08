@@ -92,6 +92,78 @@ QProgressBar::chunk {{
     border-color: #4EEAB3;
 }}
 
+/* ===== Menu Bar ===== */
+
+QMenuBar {{
+    background: #1a1d23;
+    color: #E8EAED;
+    border-bottom: 1px solid #3C4043;
+    padding: 2px 0px;
+    font-size: 12px;
+}}
+
+QMenuBar::item {{
+    background: transparent;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin: 2px 2px;
+}}
+
+QMenuBar::item:selected {{
+    background: #2c2f38;
+}}
+
+QMenuBar::item:pressed {{
+    background: #3C4043;
+}}
+
+QMenu {{
+    background: #252830;
+    color: #E8EAED;
+    border: 1px solid #3C4043;
+    border-radius: 6px;
+    padding: 4px 0px;
+    font-size: 12px;
+}}
+
+QMenu::item {{
+    padding: 6px 24px;
+}}
+
+QMenu::item:selected {{
+    background: #3C4043;
+}}
+
+QMenu::item:disabled {{
+    color: #6B7280;
+}}
+
+QMenu::separator {{
+    height: 1px;
+    background: #3C4043;
+    margin: 4px 8px;
+}}
+
+QMenu::indicator {{
+    width: 14px;
+    height: 14px;
+    margin-left: 8px;
+}}
+
+QMenu::indicator:checked {{
+    image: none;
+    background: #4C8BF5;
+    border: 1px solid #4C8BF5;
+    border-radius: 3px;
+}}
+
+QMenu::indicator:unchecked {{
+    image: none;
+    background: transparent;
+    border: 1px solid #6B7280;
+    border-radius: 3px;
+}}
+
 /* Section Navigation Tabs */
 
 .nav-button {{

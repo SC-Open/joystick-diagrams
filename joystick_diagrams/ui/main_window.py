@@ -2,13 +2,13 @@ import logging
 import os
 
 import qtawesome as qta
-from PySide6.QtCore import QCoreApplication, QSize, Qt
-from PySide6.QtGui import QDesktopServices, QIcon
+from PySide6.QtCore import QCoreApplication, QSize, Qt, QUrl
+from PySide6.QtGui import QAction, QDesktopServices, QIcon
 from PySide6.QtWidgets import (
-    QCheckBox,
-    QFrame,
     QLabel,
     QMainWindow,
+    QMenu,
+    QMessageBox,
     QProgressBar,
     QPushButton,
     QSizePolicy,
@@ -26,6 +26,7 @@ from joystick_diagrams.ui import (
     ui_consts,
 )
 from joystick_diagrams.ui.qt_designer import main_window
+from joystick_diagrams.utils import data_root
 
 _logger = logging.getLogger(__name__)
 
@@ -34,6 +35,7 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
+        self._setup_help_menu()
 
         self.app = QCoreApplication.instance()
 
@@ -93,42 +95,12 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
         self.statusLabel = QLabel()
         self.statusLabel.setText("Waiting...")
 
-        self.debug_mode = QCheckBox()
-        self.debug_mode.setText("Debug")
-        self.debug_mode.setChecked(False)
-        self.debug_mode.stateChanged.connect(self.handle_debug_mode_switch)
-
-        self.statusBar().addPermanentWidget(self.debug_mode)
         self.statusBar().addPermanentWidget(self.statusLabel, 1)
         self.statusBar().addPermanentWidget(self.progressBar, 1)
 
         # Nav bar setup
         self.topnav_layout.setSpacing(0)
         self.topnav_layout.setContentsMargins(0, 5, 0, 5)
-
-        self.discord_pill = QPushButton()
-        self.discord_pill.setIcon(qta.icon("fa5b.discord", color="#6B7280"))
-        self.discord_pill.setIconSize(QSize(16, 16))
-        self.discord_pill.setFixedSize(QSize(32, 32))
-        self.discord_pill.setToolTip("Discord Community")
-        self.discord_pill.setProperty("class", "nav-icon-button")
-
-        self.website_pill = QPushButton()
-        self.website_pill.setIcon(qta.icon("fa5s.globe", color="#6B7280"))
-        self.website_pill.setIconSize(QSize(16, 16))
-        self.website_pill.setFixedSize(QSize(32, 32))
-        self.website_pill.setToolTip("Joystick Diagrams Website")
-        self.website_pill.setProperty("class", "nav-icon-button")
-
-        self.update_pill = QPushButton()
-        self.update_pill.setText("An update is available!")
-        self.update_pill.setHidden(True)
-        self.update_pill.setIcon(QIcon(ui_consts.JD_ICON))
-        self.update_pill.setProperty("class", "pill-button update")
-
-        self.discord_pill.clicked.connect(self.open_discord_link)
-        self.website_pill.clicked.connect(self.open_website_link)
-        self.update_pill.clicked.connect(self.open_website_link)
 
         # Collapse the unused additional layout from Qt Designer
         self.topnav_additional_layout.setContentsMargins(0, 0, 0, 0)
@@ -187,20 +159,13 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
             self.settingsSectionButton, 0, Qt.AlignmentFlag.AlignVCenter
         )
 
-        # Separator between Settings and external links
-        nav_separator = QFrame()
-        nav_separator.setFrameShape(QFrame.Shape.VLine)
-        nav_separator.setFixedHeight(20)
-        nav_separator.setStyleSheet("color: #3C4043;")
-        self.topnav_layout.addWidget(nav_separator, 0, Qt.AlignmentFlag.AlignVCenter)
-
-        # External link icons — tertiary prominence
-        self.topnav_layout.addWidget(
-            self.discord_pill, 0, Qt.AlignmentFlag.AlignVCenter
-        )
-        self.topnav_layout.addWidget(
-            self.website_pill, 0, Qt.AlignmentFlag.AlignVCenter
-        )
+        # Update notification pill — hidden until an update is detected
+        self.update_pill = QPushButton()
+        self.update_pill.setText("An update is available!")
+        self.update_pill.setHidden(True)
+        self.update_pill.setIcon(QIcon(ui_consts.JD_ICON))
+        self.update_pill.setProperty("class", "pill-button update")
+        self.update_pill.clicked.connect(self._open_website)
         self.topnav_layout.addWidget(self.update_pill, 0, Qt.AlignmentFlag.AlignVCenter)
 
         # Disable Additional Menu Controls
@@ -217,19 +182,85 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
 
         self.check_for_new_version()
 
-    def check_for_new_version(self):
-        _logger.info("Checking version...")
-        version_check = version.perform_version_check()
-        _logger.info(f"Version check was {version_check}")
+    def _setup_help_menu(self):
+        self.menuBar().setNativeMenuBar(False)
 
+        help_menu = QMenu("&Help", self)
+        self.menuBar().addMenu(help_menu)
+
+        # Community links
+        discord_action = QAction("Discord Community", self)
+        discord_action.triggered.connect(self._open_discord)
+        help_menu.addAction(discord_action)
+
+        website_action = QAction("Joystick Diagrams Website", self)
+        website_action.triggered.connect(self._open_website)
+        help_menu.addAction(website_action)
+
+        help_menu.addSeparator()
+
+        # Troubleshooting
+        open_logs_action = QAction("Open Logs Folder", self)
+        open_logs_action.triggered.connect(self._open_logs_folder)
+        help_menu.addAction(open_logs_action)
+
+        self._debug_action = QAction("Debug Mode", self)
+        self._debug_action.setCheckable(True)
+        self._debug_action.setChecked(False)
+        self._debug_action.triggered.connect(self._toggle_debug_mode)
+        help_menu.addAction(self._debug_action)
+
+        help_menu.addSeparator()
+
+        # Info
+        check_updates_action = QAction("Check for Updates", self)
+        check_updates_action.triggered.connect(self._check_for_updates)
+        help_menu.addAction(check_updates_action)
+
+        about_action = QAction("About Joystick Diagrams", self)
+        about_action.triggered.connect(self._show_about)
+        help_menu.addAction(about_action)
+
+    def _open_discord(self):
+        QDesktopServices.openUrl("https://discord.gg/UUyRUuX2dX")
+
+    def _open_website(self):
+        QDesktopServices.openUrl("https://joystick-diagrams.com")
+
+    def _open_logs_folder(self):
+        log_path = data_root() / "logs"
+        QDesktopServices.openUrl(QUrl.fromLocalFile(str(log_path)))
+
+    def _toggle_debug_mode(self, checked):
+        if checked:
+            logging.getLogger().setLevel(logging.DEBUG)
+        else:
+            logging.getLogger().setLevel(logging.INFO)
+
+    def _check_for_updates(self):
+        version_check = version.perform_version_check()
         if version_check is False:
             self.update_pill.setHidden(False)
-
-    def handle_debug_mode_switch(self, state):
-        if state == 2:
-            _logger.root.setLevel(logging.DEBUG)
+            self.statusLabel.setText(
+                "An update is available! Visit joystick-diagrams.com"
+            )
+        elif version_check is True:
+            self.update_pill.setHidden(True)
+            self.statusLabel.setText("You're up to date")
         else:
-            _logger.root.setLevel(logging.INFO)
+            self.statusLabel.setText("Unable to check for updates")
+
+    def _show_about(self):
+        QMessageBox.about(
+            self,
+            "About Joystick Diagrams",
+            f"Joystick Diagrams v{version.get_current_version()}\n\n"
+            "Create diagrams for your joystick and HOTAS setups.",
+        )
+
+    def check_for_new_version(self):
+        _logger.info("Checking version...")
+        self._check_for_updates()
 
     def set_style(self):
         stylesheet = self.app.styleSheet()
@@ -237,12 +268,6 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
 
         with open(theme_path) as file:
             self.app.setStyleSheet(stylesheet + file.read().format(**os.environ))
-
-    def open_discord_link(self):
-        QDesktopServices.openUrl("https://discord.gg/UUyRUuX2dX")
-
-    def open_website_link(self):
-        QDesktopServices.openUrl("https://joystick-diagrams.com")
 
     def disable_additional_menus(self):
         for x in self.additional_menus:

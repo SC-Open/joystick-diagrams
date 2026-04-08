@@ -660,8 +660,13 @@ class PluginConfigPanel(QWidget):
         try:
             self._wrapper.update_setting(field_name, selected)
             path_field.setText(str(selected))
+            self._wrapper.push_error("")
             self.settings_changed.emit()
         except Exception as e:
+            self._wrapper.update_setting(field_name, None)
+            path_field.clear()
+            self._wrapper.push_error(str(e))
+            self.settings_changed.emit()
             QMessageBox.warning(
                 self._page,
                 "Error",
