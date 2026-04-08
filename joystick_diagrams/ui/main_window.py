@@ -2,11 +2,13 @@ import logging
 import os
 
 import qtawesome as qta
-from PySide6.QtCore import QCoreApplication, QSize, Qt
-from PySide6.QtGui import QIcon
+from PySide6.QtCore import QCoreApplication, QSize, Qt, QUrl
+from PySide6.QtGui import QAction, QDesktopServices, QIcon
 from PySide6.QtWidgets import (
     QLabel,
     QMainWindow,
+    QMenu,
+    QMessageBox,
     QProgressBar,
     QPushButton,
     QSizePolicy,
@@ -24,6 +26,7 @@ from joystick_diagrams.ui import (
     ui_consts,
 )
 from joystick_diagrams.ui.qt_designer import main_window
+from joystick_diagrams.utils import data_root
 
 _logger = logging.getLogger(__name__)
 
@@ -32,6 +35,7 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
+        self._setup_help_menu()
 
         self.app = QCoreApplication.instance()
 
@@ -168,6 +172,80 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
         self.setWindowTitle(f"Joystick Diagrams - {version.get_current_version()}")
 
         self.check_for_new_version()
+
+    def _setup_help_menu(self):
+        self.menuBar().setNativeMenuBar(False)
+
+        help_menu = QMenu("&Help", self)
+        self.menuBar().addMenu(help_menu)
+
+        # Community links
+        discord_action = QAction("Discord Community", self)
+        discord_action.triggered.connect(self._open_discord)
+        help_menu.addAction(discord_action)
+
+        website_action = QAction("Joystick Diagrams Website", self)
+        website_action.triggered.connect(self._open_website)
+        help_menu.addAction(website_action)
+
+        help_menu.addSeparator()
+
+        # Troubleshooting
+        open_logs_action = QAction("Open Logs Folder", self)
+        open_logs_action.triggered.connect(self._open_logs_folder)
+        help_menu.addAction(open_logs_action)
+
+        self._debug_action = QAction("Debug Mode", self)
+        self._debug_action.setCheckable(True)
+        self._debug_action.setChecked(False)
+        self._debug_action.triggered.connect(self._toggle_debug_mode)
+        help_menu.addAction(self._debug_action)
+
+        help_menu.addSeparator()
+
+        # Info
+        check_updates_action = QAction("Check for Updates", self)
+        check_updates_action.triggered.connect(self._check_for_updates)
+        help_menu.addAction(check_updates_action)
+
+        about_action = QAction("About Joystick Diagrams", self)
+        about_action.triggered.connect(self._show_about)
+        help_menu.addAction(about_action)
+
+    def _open_discord(self):
+        QDesktopServices.openUrl("https://discord.gg/UUyRUuX2dX")
+
+    def _open_website(self):
+        QDesktopServices.openUrl("https://joystick-diagrams.com")
+
+    def _open_logs_folder(self):
+        log_path = data_root() / "logs"
+        QDesktopServices.openUrl(QUrl.fromLocalFile(str(log_path)))
+
+    def _toggle_debug_mode(self, checked):
+        if checked:
+            logging.getLogger().setLevel(logging.DEBUG)
+        else:
+            logging.getLogger().setLevel(logging.INFO)
+
+    def _check_for_updates(self):
+        version_check = version.perform_version_check()
+        if version_check is False:
+            self.statusLabel.setText(
+                "An update is available! Visit joystick-diagrams.com"
+            )
+        elif version_check is True:
+            self.statusLabel.setText("You're up to date")
+        else:
+            self.statusLabel.setText("Unable to check for updates")
+
+    def _show_about(self):
+        QMessageBox.about(
+            self,
+            "About Joystick Diagrams",
+            f"Joystick Diagrams v{version.get_current_version()}\n\n"
+            "Create diagrams for your joystick and HOTAS setups.",
+        )
 
     def check_for_new_version(self):
         _logger.info("Checking version...")
