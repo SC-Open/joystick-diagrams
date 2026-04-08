@@ -1,20 +1,26 @@
 import logging
+import os
 import webbrowser
 from pathlib import Path
 
 import qtawesome as qta
-from PySide6.QtCore import QObject, QRunnable, QSize, QThreadPool, Signal, Slot
+from PySide6.QtCore import QObject, QRunnable, QSize, Qt, QThreadPool, Signal, Slot
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
+    QFileDialog,
     QHBoxLayout,
     QLabel,
     QMainWindow,
     QMessageBox,
+    QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
 )
 
 from joystick_diagrams.app_state import AppState
+from joystick_diagrams.db.db_device_management import (
+    add_update_device_template_path,
+)
 from joystick_diagrams.db.db_settings import get_setting
 from joystick_diagrams.export import export
 from joystick_diagrams.export_device import ExportDevice
@@ -24,6 +30,7 @@ from joystick_diagrams.ui.device_setup import DeviceSetup
 from joystick_diagrams.ui.export_settings import ExportSettings
 from joystick_diagrams.ui.qt_designer import export_ui
 from joystick_diagrams.ui.widgets.section_header import SectionHeader
+from joystick_diagrams.utils import install_root
 
 _logger = logging.getLogger(__name__)
 
@@ -45,8 +52,18 @@ class ExportPage(QMainWindow, export_ui.Ui_Form):
 
         self.ExportButton.clicked.connect(self.run_exporter)
 
-        # Hide the template button
-        self.setTemplateButton.hide()
+        # Connections
+        self.setTemplateButton.clicked.connect(self.select_template)
+
+        # UI Setup
+        self.setTemplateButton.setIconSize(QSize(20, 20))
+        self.setTemplateButton.setIcon(
+            qta.icon("fa5s.file-code", color="white", color_disabled="white")
+        )
+        self.setTemplateButton.setText("Select an item to set Template")
+        self.setTemplateButton.setProperty("class", "template-set-button")
+
+        self.setTemplateButton.setDisabled(True)
 
         self.ExportButton.setIcon(
             qta.icon("fa5s.file-export", color="white", color_disabled="white")
@@ -56,14 +73,19 @@ class ExportPage(QMainWindow, export_ui.Ui_Form):
 
         # Include Device setup Widget
         self.device_widget = DeviceSetup()
+        self.device_widget.device_item_selected.connect(self.change_template_button)
+        self.device_widget.template_set_requested.connect(self.select_template)
         self.devices_container.addWidget(self.device_widget)
         self.device_widget.number_of_selected_profiles.connect(
             self.update_export_button_state
         )
 
+        # Double-click to set template on device tree
+        self.device_widget.treeWidget.doubleClicked.connect(self._on_tree_double_click)
+
         self.device_header_label.setText("Devices")
         self.device_help_label.setText(
-            "Choose your devices or profiles to export below."
+            "Choose your devices or profiles to export below. Double-click a device to assign a template."
         )
 
         ## Include Export Settings Panel
@@ -151,6 +173,12 @@ class ExportPage(QMainWindow, export_ui.Ui_Form):
         """Refresh dynamic state when navigating back to this page."""
         self._refresh_output_plugins_panel()
 
+    def _on_tree_double_click(self, index):
+        """Handle double-click on device tree — trigger template selection for root items."""
+        item = self.device_widget.treeWidget.currentItem()
+        if item and item.parent() is None:
+            self.select_template()
+
     def update_export_button_state(self, data: int):
         if data == 0:
             self.ExportButton.setDisabled(True)
@@ -161,6 +189,46 @@ class ExportPage(QMainWindow, export_ui.Ui_Form):
 
         profile_text = "profiles" if data > 1 else "profile"
         self.ExportButton.setText(f"  Export {data} {profile_text}")
+
+    def change_template_button(self, data: QTreeWidgetItem):
+        if data.parent():
+            self.setTemplateButton.setDisabled(True)
+            self.setTemplateButton.setText("Select an item to set Template")
+
+        if data.parent() is None:
+            self.setTemplateButton.setDisabled(False)
+            self.setTemplateButton.setText(f"Update template for {data.text(0)}")
+
+    def select_template(self):
+        current_item = self.device_widget.treeWidget.currentItem()
+        if not current_item or current_item.parent() is not None:
+            return
+
+        _file = QFileDialog.getOpenFileName(
+            self,
+            caption=f"Select an SVG file to use as a template - {current_item.text(0)}",
+            filter=("SVG Files (*.svg)"),
+            dir=os.path.join(install_root(), "templates"),
+        )
+        if _file[0]:
+            file_path = Path(_file[0])
+            self.set_template_for_device(file_path)
+
+    def set_template_for_device(self, template_path: Path):
+        selected_table_rows = self.device_widget.treeWidget.currentItem()
+
+        if not selected_table_rows:
+            return
+
+        if selected_table_rows.parent() is not None:
+            return
+
+        row_guid_data = selected_table_rows.data(0, Qt.ItemDataRole.UserRole)
+
+        _save = add_update_device_template_path(row_guid_data, str(template_path))
+
+        if _save:
+            self.device_widget.devices_updated.emit()
 
     def get_items_to_export(self) -> list[ExportDevice]:
         return self.device_widget.get_selected_export_items()

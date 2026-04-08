@@ -340,6 +340,8 @@ class CustomiseDevices(QWidget):
         # Restore selection or show empty state
         if restore_row >= 0:
             self.device_list.setCurrentRow(restore_row)
+            # Force detail refresh even if row index didn't change
+            self._on_device_selected(restore_row)
         elif self.device_list.count() > 0:
             self.device_list.setCurrentRow(0)
         else:
