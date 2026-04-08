@@ -159,15 +159,6 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
             self.settingsSectionButton, 0, Qt.AlignmentFlag.AlignVCenter
         )
 
-        # Update notification pill — hidden until an update is detected
-        self.update_pill = QPushButton()
-        self.update_pill.setText("An update is available!")
-        self.update_pill.setHidden(True)
-        self.update_pill.setIcon(QIcon(ui_consts.JD_ICON))
-        self.update_pill.setProperty("class", "pill-button update")
-        self.update_pill.clicked.connect(self._open_website)
-        self.topnav_layout.addWidget(self.update_pill, 0, Qt.AlignmentFlag.AlignVCenter)
-
         # Disable Additional Menu Controls
 
         self.additional_menus = [self.exportSectionButton, self.customiseSectionButton]
@@ -240,12 +231,10 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
     def _check_for_updates(self):
         version_check = version.perform_version_check()
         if version_check is False:
-            self.update_pill.setHidden(False)
             self.statusLabel.setText(
                 "An update is available! Visit joystick-diagrams.com"
             )
         elif version_check is True:
-            self.update_pill.setHidden(True)
             self.statusLabel.setText("You're up to date")
         else:
             self.statusLabel.setText("Unable to check for updates")
