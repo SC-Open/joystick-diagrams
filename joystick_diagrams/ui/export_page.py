@@ -74,6 +74,7 @@ class ExportPage(QMainWindow, export_ui.Ui_Form):
         # Include Device setup Widget
         self.device_widget = DeviceSetup()
         self.device_widget.device_item_selected.connect(self.change_template_button)
+        self.device_widget.template_set_requested.connect(self.select_template)
         self.devices_container.addWidget(self.device_widget)
         self.device_widget.number_of_selected_profiles.connect(
             self.update_export_button_state
@@ -216,17 +217,14 @@ class ExportPage(QMainWindow, export_ui.Ui_Form):
     def set_template_for_device(self, template_path: Path):
         selected_table_rows = self.device_widget.treeWidget.currentItem()
 
-        # Selection Mode is single so force select first
         if not selected_table_rows:
-            return  # Add handling here...
+            return
 
-        # Not a root object, child was selected
         if selected_table_rows.parent() is not None:
             return
 
         row_guid_data = selected_table_rows.data(0, Qt.ItemDataRole.UserRole)
 
-        # Save the device information
         _save = add_update_device_template_path(row_guid_data, str(template_path))
 
         if _save:

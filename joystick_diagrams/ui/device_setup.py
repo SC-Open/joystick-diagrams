@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
     QTreeWidgetItem,
 )
 
+from joystick_diagrams.app_state import AppState
 from joystick_diagrams.db.db_device_management import (
     add_update_device_template_path,
     get_device_template_path,
@@ -33,6 +34,7 @@ class DeviceSetup(QMainWindow, device_setup_ui.Ui_Form):
     device_item_selected = Signal(object)
     device_checkstate_changed = Signal()
     number_of_selected_profiles = Signal(int)
+    template_set_requested = Signal()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -120,8 +122,8 @@ class DeviceSetup(QMainWindow, device_setup_ui.Ui_Form):
 
         if action == set_action:
             self.treeWidget.setCurrentItem(item)
-            # Emit signal so export page can handle the template selection
             self.device_item_selected.emit(item)
+            self.template_set_requested.emit()
         elif action == clear_action and guid:
             add_update_device_template_path(guid, "")
             self.devices_updated.emit()
@@ -244,7 +246,13 @@ class DeviceSetup(QMainWindow, device_setup_ui.Ui_Form):
         tree_roots = []
         self.treeWidget.clear()
 
-        identifiers = set([(x.device_id, x.device_name) for x in export_devices])
+        device_service = AppState().device_service
+        identifiers = set(
+            [
+                (x.device_id, device_service.resolve_name(x.device_id, x.device_name))
+                for x in export_devices
+            ]
+        )
 
         def return_top_level_icon_state(
             children_have_template_issues: bool, children_have_errors: bool
