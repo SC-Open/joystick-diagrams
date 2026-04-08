@@ -8,14 +8,13 @@ from PySide6.QtWidgets import (
     QAbstractItemView,
     QHeaderView,
     QMainWindow,
-    QMenu,
     QMessageBox,
     QPushButton,
     QTreeWidgetItem,
 )
 
+from joystick_diagrams.app_state import AppState
 from joystick_diagrams.db.db_device_management import (
-    add_update_device_template_path,
     get_device_template_path,
 )
 from joystick_diagrams.export_device import ExportDevice
@@ -103,28 +102,7 @@ class DeviceSetup(QMainWindow, device_setup_ui.Ui_Form):
         self.initialise_ui()
 
     def _show_context_menu(self, position):
-        """Context menu for device tree — Set/Clear template on root items."""
-        item = self.treeWidget.itemAt(position)
-        if not item or item.parent() is not None:
-            return  # Only show context menu on root (device) items
-
-        menu = QMenu(self)
-        set_action = menu.addAction("Set Template...")
-        clear_action = menu.addAction("Clear Template")
-
-        guid = item.data(0, Qt.ItemDataRole.UserRole)
-        has_template = bool(get_device_template_path(guid)) if guid else False
-        clear_action.setEnabled(has_template)
-
-        action = menu.exec(self.treeWidget.viewport().mapToGlobal(position))
-
-        if action == set_action:
-            self.treeWidget.setCurrentItem(item)
-            # Emit signal so export page can handle the template selection
-            self.device_item_selected.emit(item)
-        elif action == clear_action and guid:
-            add_update_device_template_path(guid, "")
-            self.devices_updated.emit()
+        pass
 
     def initialise_ui(self):
         devices = get_export_devices()
@@ -244,7 +222,13 @@ class DeviceSetup(QMainWindow, device_setup_ui.Ui_Form):
         tree_roots = []
         self.treeWidget.clear()
 
-        identifiers = set([(x.device_id, x.device_name) for x in export_devices])
+        device_service = AppState().device_service
+        identifiers = set(
+            [
+                (x.device_id, device_service.resolve_name(x.device_id, x.device_name))
+                for x in export_devices
+            ]
+        )
 
         def return_top_level_icon_state(
             children_have_template_issues: bool, children_have_errors: bool
