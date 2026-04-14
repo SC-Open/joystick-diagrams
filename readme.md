@@ -86,7 +86,7 @@ A starter template is included for creating custom device layouts using [draw.io
 
 1. Download the latest [release](https://github.com/Rexeh/joystick-diagrams/releases)
 2. Unzip to your preferred location
-3. Launch `Joystick Diagrams.exe`
+3. Run installer, and launch application
 
 For setup guidance, see the [documentation](https://joystick-diagrams.com/setup/).
 

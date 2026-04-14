@@ -132,8 +132,7 @@ def populate_template(export_device: ExportDevice) -> str:
 
 
 def sanitize_string_for_svg(value_to_sanitize: str) -> str:
-    """Safely sanitize string for SVG display"""
-    return escape(unescape(value_to_sanitize))
+    return escape(unescape(value_to_sanitize), {'"': "&quot;", "'": "&apos;"})
 
 
 def replace_input_modifiers_string(
