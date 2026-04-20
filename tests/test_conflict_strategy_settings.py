@@ -17,25 +17,25 @@ from joystick_diagrams.conflict_strategy import (
 class TestAliasStrategyGetter:
     def test_unset_returns_default(self):
         with patch(
-            "joystick_diagrams.conflict_strategy.get_setting", return_value=None
+            "joystick_diagrams.db.db_settings.get_setting", return_value=None
         ) as mock_get:
             assert get_alias_strategy() == DEFAULT_ALIAS_STRATEGY
             mock_get.assert_called_once_with(ALIAS_CONFLICT_STRATEGY_KEY)
 
     def test_valid_value_returns_parsed_enum(self):
         with patch(
-            "joystick_diagrams.conflict_strategy.get_setting", return_value="MODIFIER"
+            "joystick_diagrams.db.db_settings.get_setting", return_value="MODIFIER"
         ):
             assert get_alias_strategy() == AliasConflictStrategy.MODIFIER
         with patch(
-            "joystick_diagrams.conflict_strategy.get_setting",
+            "joystick_diagrams.db.db_settings.get_setting",
             return_value="CONCATENATE",
         ):
             assert get_alias_strategy() == AliasConflictStrategy.CONCATENATE
 
     def test_invalid_value_falls_back_to_default(self):
         with patch(
-            "joystick_diagrams.conflict_strategy.get_setting",
+            "joystick_diagrams.db.db_settings.get_setting",
             return_value="NONSENSE",
         ):
             assert get_alias_strategy() == DEFAULT_ALIAS_STRATEGY
@@ -44,7 +44,7 @@ class TestAliasStrategyGetter:
 class TestInheritanceStrategyGetter:
     def test_unset_returns_default(self):
         with patch(
-            "joystick_diagrams.conflict_strategy.get_setting", return_value=None
+            "joystick_diagrams.db.db_settings.get_setting", return_value=None
         ) as mock_get:
             assert get_inheritance_strategy() == DEFAULT_INHERITANCE_STRATEGY
             mock_get.assert_called_once_with(INHERITANCE_CONFLICT_STRATEGY_KEY)
@@ -56,13 +56,13 @@ class TestInheritanceStrategyGetter:
             ("CONCATENATE", InheritanceConflictStrategy.CONCATENATE),
         ]:
             with patch(
-                "joystick_diagrams.conflict_strategy.get_setting", return_value=value
+                "joystick_diagrams.db.db_settings.get_setting", return_value=value
             ):
                 assert get_inheritance_strategy() == expected
 
     def test_invalid_value_falls_back_to_default(self):
         with patch(
-            "joystick_diagrams.conflict_strategy.get_setting",
+            "joystick_diagrams.db.db_settings.get_setting",
             return_value="GARBAGE",
         ):
             assert get_inheritance_strategy() == DEFAULT_INHERITANCE_STRATEGY

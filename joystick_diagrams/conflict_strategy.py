@@ -15,7 +15,7 @@ import logging
 from copy import deepcopy
 from enum import Enum
 
-from joystick_diagrams.db.db_settings import get_setting
+from joystick_diagrams.db import db_settings
 from joystick_diagrams.input.input import Input_
 from joystick_diagrams.input.modifier import Modifier
 
@@ -43,7 +43,7 @@ DEFAULT_INHERITANCE_STRATEGY = InheritanceConflictStrategy.KEEP_EXISTING
 
 
 def get_alias_strategy() -> AliasConflictStrategy:
-    raw = get_setting(ALIAS_CONFLICT_STRATEGY_KEY)
+    raw = db_settings.get_setting(ALIAS_CONFLICT_STRATEGY_KEY)
     if raw is None:
         return DEFAULT_ALIAS_STRATEGY
     try:
@@ -56,7 +56,7 @@ def get_alias_strategy() -> AliasConflictStrategy:
 
 
 def get_inheritance_strategy() -> InheritanceConflictStrategy:
-    raw = get_setting(INHERITANCE_CONFLICT_STRATEGY_KEY)
+    raw = db_settings.get_setting(INHERITANCE_CONFLICT_STRATEGY_KEY)
     if raw is None:
         return DEFAULT_INHERITANCE_STRATEGY
     try:
