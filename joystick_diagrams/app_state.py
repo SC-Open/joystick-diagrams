@@ -1,9 +1,15 @@
 import logging
 from copy import deepcopy
 
+from joystick_diagrams.conflict_strategy import (
+    AliasConflictStrategy,
+    apply_input_conflict,
+    get_alias_strategy,
+)
 from joystick_diagrams.db.device_alias_service import DeviceAliasService
 from joystick_diagrams.db.device_service import DeviceService
 from joystick_diagrams.db.label_service import LabelService
+from joystick_diagrams.input.device import Device_
 from joystick_diagrams.input.profile import Profile_
 from joystick_diagrams.input.profile_collection import ProfileCollection
 from joystick_diagrams.plugin_wrapper import PluginWrapper
@@ -114,50 +120,71 @@ class AppState:
 
     @staticmethod
     def _apply_aliases_to_profile(
-        profile: Profile_, alias_service: DeviceAliasService
+        profile: Profile_,
+        alias_service: DeviceAliasService,
+        strategy: AliasConflictStrategy | None = None,
     ) -> Profile_:
         """Resolve GUID aliases within a single profile, merging devices as needed.
 
-        For each device, its GUID is resolved via the alias service. If the
-        canonical GUID already exists in the result set, the source device's
-        inputs are merged into the existing device (existing bindings take
-        priority and are never overwritten).
+        For each canonical GUID, all aliased source devices and the target device
+        (if present) are grouped together. The first source in iteration order
+        becomes the canonical device's base (source-wins-primary). Subsequent
+        sources and the target are merged in as losers; primary-binding conflicts
+        are resolved per the configured `strategy` (defaults to the app-wide
+        setting). Non-conflicting inputs gap-fill as before.
 
         Args:
             profile: The profile to process (mutated in place and returned).
             alias_service: Service providing GUID alias resolution.
+            strategy: Override for the alias conflict strategy. None reads the
+                user setting (via `get_alias_strategy()`).
 
         Returns:
             The profile with aliases resolved.
         """
+        if strategy is None:
+            strategy = get_alias_strategy()
+
         items = list(profile.devices.items())
         original_count = len(items)
-        new_devices = {}
 
+        # Group devices by canonical GUID, preserving iteration order for sources.
+        groups: dict[str, dict] = {}
         for guid, device in items:
             canonical = alias_service.resolve(guid)
-
-            if canonical in new_devices:
-                # Merge source inputs into existing device; existing bindings win
-                existing_device = new_devices[canonical]
-                merged_count = 0
-                for input_type, inputs in device.inputs.items():
-                    for input_key, input_ in inputs.items():
-                        if input_key not in existing_device.inputs[input_type]:
-                            existing_device.inputs[input_type][input_key] = deepcopy(
-                                input_
-                            )
-                            merged_count += 1
-                _logger.debug(
-                    f"Merged device {guid[:8]} into existing {canonical[:8]}, added {merged_count} inputs"
-                )
+            is_source = canonical != guid
+            group = groups.setdefault(canonical, {"sources": [], "target": None})
+            if is_source:
+                group["sources"].append(device)
             else:
-                if canonical != guid:
-                    _logger.debug(
-                        f"Aliased device {guid[:8]} -> {canonical[:8]} in profile {profile.name}"
-                    )
-                device.guid = canonical
-                new_devices[canonical] = device
+                group["target"] = device
+
+        new_devices: dict[str, Device_] = {}
+        for canonical, group in groups.items():
+            sources = group["sources"]
+            target = group["target"]
+
+            if not sources:
+                # No aliasing for this canonical - keep target as-is.
+                new_devices[canonical] = target
+                continue
+
+            # First source wins primary. Subsequent sources and the target are losers.
+            winner = deepcopy(sources[0])
+            winner.guid = canonical
+
+            losers: list[Device_] = list(sources[1:])
+            if target is not None:
+                losers.append(target)
+
+            for loser in losers:
+                _merge_alias_loser_into_winner(winner, loser, strategy)
+
+            new_devices[canonical] = winner
+            if canonical != sources[0].guid:
+                _logger.debug(
+                    f"Aliased device {sources[0].guid[:8]} -> {canonical[:8]} in profile {profile.name}"
+                )
 
         _logger.debug(
             f"Alias resolution complete for {profile.name}: {original_count} devices -> {len(new_devices)} devices"
@@ -195,6 +222,27 @@ class AppState:
         _logger.debug(
             f"Loaded plugins resulted in the following profiles being detected {self.plugin_profile_map}"
         )
+
+
+def _merge_alias_loser_into_winner(
+    winner: Device_, loser: Device_, strategy: AliasConflictStrategy
+) -> None:
+    """Merge a losing (aliased) device's inputs into the winner in-place.
+
+    Non-conflicting input keys are copied wholesale. Conflicts are resolved per
+    `strategy`; loser qualifier for promoted modifiers is the loser's device name.
+    """
+    for input_type, inputs in loser.inputs.items():
+        for input_key, loser_input in inputs.items():
+            if input_key not in winner.inputs[input_type]:
+                winner.inputs[input_type][input_key] = deepcopy(loser_input)
+            else:
+                apply_input_conflict(
+                    winner=winner.inputs[input_type][input_key],
+                    loser=loser_input,
+                    loser_qualifier=loser.name,
+                    strategy=strategy,
+                )
 
 
 if __name__ == "__main__":
