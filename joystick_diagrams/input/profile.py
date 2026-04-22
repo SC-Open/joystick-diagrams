@@ -6,6 +6,7 @@ from joystick_diagrams.conflict_strategy import (
     apply_input_conflict,
 )
 from joystick_diagrams.input.device import Device_
+from joystick_diagrams.input_routing import RouteKey, RouteTarget
 
 _logger = logging.getLogger("__name__")
 
@@ -14,6 +15,7 @@ class Profile_:  # noqa: N801
     def __init__(self, profile_name: str):
         self.name: str = profile_name
         self.devices: dict[str, Device_] = {}
+        self.input_routes: dict[RouteKey, list[RouteTarget]] = {}
 
     def __repr__(self) -> str:
         return f"(Profile Object: {self.name})"

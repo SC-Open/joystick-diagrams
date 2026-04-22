@@ -12,6 +12,7 @@ from joystick_diagrams.db.label_service import LabelService
 from joystick_diagrams.input.device import Device_
 from joystick_diagrams.input.profile import Profile_
 from joystick_diagrams.input.profile_collection import ProfileCollection
+from joystick_diagrams.input_routing import apply_routes, union_profile_routes
 from joystick_diagrams.plugin_wrapper import PluginWrapper
 from joystick_diagrams.plugins.output_plugin_manager import OutputPluginManager
 from joystick_diagrams.plugins.plugin_manager import ParserPluginManager
@@ -74,6 +75,11 @@ class AppState:
         # and aliasing then resolves GUIDs on the final merged result.
         self.initialise_profile_wrappers()
 
+        # Apply cross-device input routes (e.g. Gremlin vJoy remaps) so that
+        # commands bound to the remap target land on the correct physical input
+        # before alias resolution collapses device GUIDs.
+        self._apply_input_routes(self.profile_wrappers, strategy=get_alias_strategy())
+
         # Apply GUID alias resolution on fully inherited profiles
         self._apply_guid_aliases()
 
@@ -103,6 +109,42 @@ class AppState:
             _logger.debug(
                 f"Processing profiles from plugins with {plugin} plugin collections"
             )
+
+    @staticmethod
+    def _apply_input_routes(
+        profile_wrappers: list["ProfileWrapper"],
+        strategy: AliasConflictStrategy,
+    ) -> None:
+        """Apply cross-device input routes across all profile wrappers.
+
+        Routes (populated by plugins such as Joystick Gremlin) describe
+        "commands bound to device A / input X should display on device B /
+        input Y". Routes from all wrappers are unioned, then applied to every
+        profile. Conflicts on the same destination input use the alias
+        strategy (short/long/conditional flow through as the loser qualifier).
+        """
+        all_profiles = [w.profile for w in profile_wrappers if w.profile is not None]
+        if not all_profiles:
+            return
+
+        union_routes = union_profile_routes(all_profiles)
+        if not union_routes:
+            return
+
+        device_names = AppState._collect_device_names(all_profiles)
+
+        for profile in all_profiles:
+            apply_routes(profile, union_routes, strategy, device_names)
+
+    @staticmethod
+    def _collect_device_names(profiles: list[Profile_]) -> dict[str, str]:
+        """Build a device_guid -> device_name lookup from all known profiles."""
+        names: dict[str, str] = {}
+        for profile in profiles:
+            for guid, device in profile.devices.items():
+                if guid not in names and device.name:
+                    names[guid] = device.name
+        return names
 
     def _apply_guid_aliases(self):
         """Apply device GUID alias resolution to all profile wrappers.
