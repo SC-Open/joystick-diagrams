@@ -1,11 +1,18 @@
 import logging
 from copy import deepcopy
 
+from joystick_diagrams.conflict_strategy import (
+    AliasConflictStrategy,
+    apply_input_conflict,
+    get_alias_strategy,
+)
 from joystick_diagrams.db.device_alias_service import DeviceAliasService
 from joystick_diagrams.db.device_service import DeviceService
 from joystick_diagrams.db.label_service import LabelService
+from joystick_diagrams.input.device import Device_
 from joystick_diagrams.input.profile import Profile_
 from joystick_diagrams.input.profile_collection import ProfileCollection
+from joystick_diagrams.input_routing import apply_routes, union_profile_routes
 from joystick_diagrams.plugin_wrapper import PluginWrapper
 from joystick_diagrams.plugins.output_plugin_manager import OutputPluginManager
 from joystick_diagrams.plugins.plugin_manager import ParserPluginManager
@@ -68,6 +75,11 @@ class AppState:
         # and aliasing then resolves GUIDs on the final merged result.
         self.initialise_profile_wrappers()
 
+        # Apply cross-device input routes (e.g. Gremlin vJoy remaps) so that
+        # commands bound to the remap target land on the correct physical input
+        # before alias resolution collapses device GUIDs.
+        self._apply_input_routes(self.profile_wrappers, strategy=get_alias_strategy())
+
         # Apply GUID alias resolution on fully inherited profiles
         self._apply_guid_aliases()
 
@@ -98,6 +110,42 @@ class AppState:
                 f"Processing profiles from plugins with {plugin} plugin collections"
             )
 
+    @staticmethod
+    def _apply_input_routes(
+        profile_wrappers: list["ProfileWrapper"],
+        strategy: AliasConflictStrategy,
+    ) -> None:
+        """Apply cross-device input routes across all profile wrappers.
+
+        Routes (populated by plugins such as Joystick Gremlin) describe
+        "commands bound to device A / input X should display on device B /
+        input Y". Routes from all wrappers are unioned, then applied to every
+        profile. Conflicts on the same destination input use the alias
+        strategy (short/long/conditional flow through as the loser qualifier).
+        """
+        all_profiles = [w.profile for w in profile_wrappers if w.profile is not None]
+        if not all_profiles:
+            return
+
+        union_routes = union_profile_routes(all_profiles)
+        if not union_routes:
+            return
+
+        device_names = AppState._collect_device_names(all_profiles)
+
+        for profile in all_profiles:
+            apply_routes(profile, union_routes, strategy, device_names)
+
+    @staticmethod
+    def _collect_device_names(profiles: list[Profile_]) -> dict[str, str]:
+        """Build a device_guid -> device_name lookup from all known profiles."""
+        names: dict[str, str] = {}
+        for profile in profiles:
+            for guid, device in profile.devices.items():
+                if guid not in names and device.name:
+                    names[guid] = device.name
+        return names
+
     def _apply_guid_aliases(self):
         """Apply device GUID alias resolution to all profile wrappers.
 
@@ -114,50 +162,71 @@ class AppState:
 
     @staticmethod
     def _apply_aliases_to_profile(
-        profile: Profile_, alias_service: DeviceAliasService
+        profile: Profile_,
+        alias_service: DeviceAliasService,
+        strategy: AliasConflictStrategy | None = None,
     ) -> Profile_:
         """Resolve GUID aliases within a single profile, merging devices as needed.
 
-        For each device, its GUID is resolved via the alias service. If the
-        canonical GUID already exists in the result set, the source device's
-        inputs are merged into the existing device (existing bindings take
-        priority and are never overwritten).
+        For each canonical GUID, all aliased source devices and the target device
+        (if present) are grouped together. The first source in iteration order
+        becomes the canonical device's base (source-wins-primary). Subsequent
+        sources and the target are merged in as losers; primary-binding conflicts
+        are resolved per the configured `strategy` (defaults to the app-wide
+        setting). Non-conflicting inputs gap-fill as before.
 
         Args:
             profile: The profile to process (mutated in place and returned).
             alias_service: Service providing GUID alias resolution.
+            strategy: Override for the alias conflict strategy. None reads the
+                user setting (via `get_alias_strategy()`).
 
         Returns:
             The profile with aliases resolved.
         """
+        if strategy is None:
+            strategy = get_alias_strategy()
+
         items = list(profile.devices.items())
         original_count = len(items)
-        new_devices = {}
 
+        # Group devices by canonical GUID, preserving iteration order for sources.
+        groups: dict[str, dict] = {}
         for guid, device in items:
             canonical = alias_service.resolve(guid)
-
-            if canonical in new_devices:
-                # Merge source inputs into existing device; existing bindings win
-                existing_device = new_devices[canonical]
-                merged_count = 0
-                for input_type, inputs in device.inputs.items():
-                    for input_key, input_ in inputs.items():
-                        if input_key not in existing_device.inputs[input_type]:
-                            existing_device.inputs[input_type][input_key] = deepcopy(
-                                input_
-                            )
-                            merged_count += 1
-                _logger.debug(
-                    f"Merged device {guid[:8]} into existing {canonical[:8]}, added {merged_count} inputs"
-                )
+            is_source = canonical != guid
+            group = groups.setdefault(canonical, {"sources": [], "target": None})
+            if is_source:
+                group["sources"].append(device)
             else:
-                if canonical != guid:
-                    _logger.debug(
-                        f"Aliased device {guid[:8]} -> {canonical[:8]} in profile {profile.name}"
-                    )
-                device.guid = canonical
-                new_devices[canonical] = device
+                group["target"] = device
+
+        new_devices: dict[str, Device_] = {}
+        for canonical, group in groups.items():
+            sources = group["sources"]
+            target = group["target"]
+
+            if not sources:
+                # No aliasing for this canonical - keep target as-is.
+                new_devices[canonical] = target
+                continue
+
+            # First source wins primary. Subsequent sources and the target are losers.
+            winner = deepcopy(sources[0])
+            winner.guid = canonical
+
+            losers: list[Device_] = list(sources[1:])
+            if target is not None:
+                losers.append(target)
+
+            for loser in losers:
+                _merge_alias_loser_into_winner(winner, loser, strategy)
+
+            new_devices[canonical] = winner
+            if canonical != sources[0].guid:
+                _logger.debug(
+                    f"Aliased device {sources[0].guid[:8]} -> {canonical[:8]} in profile {profile.name}"
+                )
 
         _logger.debug(
             f"Alias resolution complete for {profile.name}: {original_count} devices -> {len(new_devices)} devices"
@@ -195,6 +264,27 @@ class AppState:
         _logger.debug(
             f"Loaded plugins resulted in the following profiles being detected {self.plugin_profile_map}"
         )
+
+
+def _merge_alias_loser_into_winner(
+    winner: Device_, loser: Device_, strategy: AliasConflictStrategy
+) -> None:
+    """Merge a losing (aliased) device's inputs into the winner in-place.
+
+    Non-conflicting input keys are copied wholesale. Conflicts are resolved per
+    `strategy`; loser qualifier for promoted modifiers is the loser's device name.
+    """
+    for input_type, inputs in loser.inputs.items():
+        for input_key, loser_input in inputs.items():
+            if input_key not in winner.inputs[input_type]:
+                winner.inputs[input_type][input_key] = deepcopy(loser_input)
+            else:
+                apply_input_conflict(
+                    winner=winner.inputs[input_type][input_key],
+                    loser=loser_input,
+                    loser_qualifier=loser.name,
+                    strategy=strategy,
+                )
 
 
 if __name__ == "__main__":

@@ -28,6 +28,14 @@ from PySide6.QtWidgets import (
 
 from joystick_diagrams import utils
 from joystick_diagrams.app_state import AppState
+from joystick_diagrams.conflict_strategy import (
+    ALIAS_CONFLICT_STRATEGY_KEY,
+    INHERITANCE_CONFLICT_STRATEGY_KEY,
+    AliasConflictStrategy,
+    InheritanceConflictStrategy,
+    get_alias_strategy,
+    get_inheritance_strategy,
+)
 from joystick_diagrams.db.db_settings import add_update_setting_value, get_setting
 from joystick_diagrams.ui.widgets.section_header import SectionHeader
 
@@ -45,6 +53,26 @@ DATE_FORMAT_OPTIONS = [
     ("%d %b %Y", "DD Mon YYYY"),
     ("%B %d, %Y", "Month DD, YYYY"),
     ("%Y/%m/%d", "YYYY/MM/DD"),
+]
+
+ALIAS_STRATEGY_OPTIONS = [
+    (AliasConflictStrategy.CONCATENATE, "Concatenate (combine into primary)"),
+    (AliasConflictStrategy.MODIFIER, "Modifier (losing binding becomes a modifier)"),
+]
+
+INHERITANCE_STRATEGY_OPTIONS = [
+    (
+        InheritanceConflictStrategy.KEEP_EXISTING,
+        "Keep existing (main profile wins)",
+    ),
+    (
+        InheritanceConflictStrategy.CONCATENATE,
+        "Concatenate (combine into primary)",
+    ),
+    (
+        InheritanceConflictStrategy.MODIFIER,
+        "Modifier (inherited binding becomes a modifier)",
+    ),
 ]
 
 
@@ -142,6 +170,48 @@ class SettingsPage(QMainWindow):
         )
         form.addRow("", self.open_after_export_cb)
 
+        # Alias merge strategy
+        self.alias_strategy_combo = QComboBox()
+        self.alias_strategy_combo.setProperty("class", "view-binds-list")
+        self.alias_strategy_combo.setMinimumWidth(320)
+        self.alias_strategy_combo.setToolTip(
+            "When two aliased devices both have a binding on the same control, "
+            "choose whether to concatenate them into one string or demote the "
+            "target's binding to a modifier."
+        )
+        current_alias = get_alias_strategy()
+        for i, (value, label) in enumerate(ALIAS_STRATEGY_OPTIONS):
+            self.alias_strategy_combo.addItem(label, value.value)
+            if value == current_alias:
+                self.alias_strategy_combo.setCurrentIndex(i)
+        self.alias_strategy_combo.currentIndexChanged.connect(
+            self._on_alias_strategy_changed
+        )
+        alias_label = QLabel("Alias merge strategy")
+        alias_label.setObjectName("device_help_label")
+        form.addRow(alias_label, self.alias_strategy_combo)
+
+        # Profile inheritance strategy
+        self.inheritance_strategy_combo = QComboBox()
+        self.inheritance_strategy_combo.setProperty("class", "view-binds-list")
+        self.inheritance_strategy_combo.setMinimumWidth(320)
+        self.inheritance_strategy_combo.setToolTip(
+            "When a child profile and an inherited parent profile both bind the "
+            "same control, choose whether to keep only the child's binding, "
+            "concatenate them, or demote the parent's binding to a modifier."
+        )
+        current_inheritance = get_inheritance_strategy()
+        for i, (value, label) in enumerate(INHERITANCE_STRATEGY_OPTIONS):
+            self.inheritance_strategy_combo.addItem(label, value.value)
+            if value == current_inheritance:
+                self.inheritance_strategy_combo.setCurrentIndex(i)
+        self.inheritance_strategy_combo.currentIndexChanged.connect(
+            self._on_inheritance_strategy_changed
+        )
+        inh_label = QLabel("Profile inheritance strategy")
+        inh_label.setObjectName("device_help_label")
+        form.addRow(inh_label, self.inheritance_strategy_combo)
+
         layout.addLayout(form)
         layout.addStretch(1)
         return tab
@@ -156,6 +226,16 @@ class SettingsPage(QMainWindow):
         fmt = self.date_format_combo.currentData()
         if fmt:
             add_update_setting_value(DATE_FORMAT_SETTING_KEY, fmt)
+
+    def _on_alias_strategy_changed(self, index: int):
+        value = self.alias_strategy_combo.currentData()
+        if value:
+            add_update_setting_value(ALIAS_CONFLICT_STRATEGY_KEY, value)
+
+    def _on_inheritance_strategy_changed(self, index: int):
+        value = self.inheritance_strategy_combo.currentData()
+        if value:
+            add_update_setting_value(INHERITANCE_CONFLICT_STRATEGY_KEY, value)
 
     # ── Shared Plugin Helpers ──
 

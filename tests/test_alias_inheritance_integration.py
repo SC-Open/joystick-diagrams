@@ -1,10 +1,16 @@
 """Integration tests for GUID aliasing + profile inheritance + export pipeline.
 
 Verifies that when devices are aliased and profiles inherit from parents,
-the final merged profile has correct bindings with proper priority rules:
-- Child bindings win over parent bindings (inheritance)
-- Target device bindings win over source device bindings (aliasing)
-- Aliasing must run AFTER inheritance to avoid being discarded
+the final merged profile has correct bindings under the explicit conflict
+strategy rules:
+
+- Inheritance with KEEP_EXISTING: child primary wins, parent primary dropped
+  (this was the de-facto behaviour before the strategy work; still the default).
+- Alias: source-wins-primary, deterministic regardless of iteration order.
+  Conflicts are resolved by the configured strategy (MODIFIER or CONCATENATE).
+
+Aliasing must still run AFTER inheritance; inherit_parents_into_profile() rebuilds
+from original_profile each time, which would discard a prior alias pass.
 """
 
 from copy import deepcopy
@@ -13,6 +19,10 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from joystick_diagrams.app_state import AppState
+from joystick_diagrams.conflict_strategy import (
+    AliasConflictStrategy,
+    InheritanceConflictStrategy,
+)
 from joystick_diagrams.db.device_alias_service import DeviceAliasService
 from joystick_diagrams.input.button import Button
 from joystick_diagrams.input.profile import Profile_
@@ -61,17 +71,40 @@ def alias_service_no_aliases():
         yield DeviceAliasService()
 
 
+@pytest.fixture()
+def use_keep_existing_defaults(monkeypatch):
+    """Force default settings to preserve pre-strategy-work behaviour.
+
+    Inheritance = KEEP_EXISTING (child wins, parent dropped).
+    Alias = MODIFIER so the new alias strategy's behaviour is deterministic
+    (source wins primary, target's primary becomes a modifier).
+    """
+    monkeypatch.setattr(
+        "joystick_diagrams.profile_wrapper.get_inheritance_strategy",
+        lambda: InheritanceConflictStrategy.KEEP_EXISTING,
+    )
+    monkeypatch.setattr(
+        "joystick_diagrams.app_state.get_alias_strategy",
+        lambda: AliasConflictStrategy.MODIFIER,
+    )
+
+
 class TestAliasAndInheritanceCombined:
     """Tests for the combined aliasing + inheritance pipeline."""
 
-    def test_alias_plus_inheritance_merges_correctly(self, alias_service_a_to_b):
+    def test_alias_plus_inheritance_merges_correctly(
+        self, alias_service_a_to_b, use_keep_existing_defaults
+    ):
         """Parent has Device A bindings, child has Device B bindings, A aliased to B.
 
-        After inheritance (child merges parent) then aliasing (A resolves to B),
-        the result should have a single device under GUID_B with:
-        - Button1 = "missile" (child wins over parent)
-        - Button2 = "flare" (child only)
-        - Button3 = "chaff" (inherited from parent)
+        With inheritance=KEEP_EXISTING and alias=MODIFIER:
+        - Inheritance step: child's devices (B, A from parent) — no device-level
+          conflicts since they have different GUIDs pre-aliasing.
+        - Alias step: A (source) wins primary on canonical B. B's original bindings
+          are demoted to modifiers qualified by B's device name.
+
+        Under source-wins-primary: canonical B has A's "fire"/"chaff" as primary,
+        and B's "missile"/"flare" as modifiers.
         """
         mock_pw = _make_mock_plugin_wrapper()
 
@@ -85,15 +118,14 @@ class TestAliasAndInheritanceCombined:
         parent_wrapper = ProfileWrapper(parent_profile, mock_pw)
         child_wrapper = ProfileWrapper(child_profile, mock_pw)
 
-        # Set up inheritance: child inherits from parent
         child_wrapper.parents = [parent_wrapper]
         child_wrapper.inherit_parents_into_profile()
 
-        # After inheritance, child should have both devices (A from parent, B from child)
+        # After inheritance, child should have both devices (no overlapping GUIDs)
         assert GUID_A in child_wrapper.profile.devices
         assert GUID_B in child_wrapper.profile.devices
 
-        # Now apply aliasing (A -> B)
+        # Apply aliasing (A -> B, source-wins-primary with MODIFIER strategy)
         child_wrapper.profile = AppState._apply_aliases_to_profile(
             child_wrapper.profile, alias_service_a_to_b
         )
@@ -104,20 +136,30 @@ class TestAliasAndInheritanceCombined:
         assert len(child_wrapper.profile.devices) == 1
 
         merged = child_wrapper.profile.devices[GUID_B]
-        # Child's Button1 wins over parent's (child had "missile", parent had "fire")
-        assert merged.inputs["buttons"]["BUTTON_1"].command == "missile"
-        # Child's Button2 (no conflict)
-        assert merged.inputs["buttons"]["BUTTON_2"].command == "flare"
-        # Parent's Button3 inherited and merged in (from Device A, now under B)
+        # Source A's bindings take the primary slot
+        assert merged.inputs["buttons"]["BUTTON_1"].command == "fire"
         assert merged.inputs["buttons"]["BUTTON_3"].command == "chaff"
+        # Target B's "flare" (BUTTON_2, no conflict) fills in as primary
+        assert merged.inputs["buttons"]["BUTTON_2"].command == "flare"
+        # Target B's "missile" (BUTTON_1) was demoted to a modifier
+        assert any(
+            mod.command == "missile"
+            for mod in merged.inputs["buttons"]["BUTTON_1"].modifiers
+        )
 
     def test_alias_plus_inheritance_parent_both_devices_merge(
-        self, alias_service_a_to_b
+        self, alias_service_a_to_b, use_keep_existing_defaults
     ):
         """Parent has both Device A and Device B, child has Device B only.
 
-        After inheritance + aliasing: child has single device under GUID_B with
-        all buttons from parent A, parent B, and child B (child wins on conflicts).
+        Inheritance=KEEP_EXISTING: child's B wins on BUTTON_5 conflict with parent's B.
+        After inheritance, child sees:
+          - B: BUTTON_1="missile", BUTTON_5="gear_up" (child wins over parent's "gear_toggle")
+          - A: BUTTON_3="chaff", BUTTON_4="countermeasures" (from parent, gap-fill)
+
+        Alias (A->B, MODIFIER): A is the source. A's BUTTON_3/BUTTON_4 fill in as
+        primary on canonical B (no conflict). No BUTTON_1 or BUTTON_5 on A, so
+        B's existing primaries stay.
         """
         mock_pw = _make_mock_plugin_wrapper()
 
@@ -145,16 +187,16 @@ class TestAliasAndInheritanceCombined:
         assert len(child_wrapper.profile.devices) == 1
         merged = child_wrapper.profile.devices[GUID_B]
 
-        # From child
+        # From child (no conflict with A)
         assert merged.inputs["buttons"]["BUTTON_1"].command == "missile"
-        # From parent Device A (inherited, then aliased into B)
+        # From parent Device A (aliased into B, gap-fill)
         assert merged.inputs["buttons"]["BUTTON_3"].command == "chaff"
         assert merged.inputs["buttons"]["BUTTON_4"].command == "countermeasures"
-        # Child's Button5 wins over parent's (child="gear_up", parent="gear_toggle")
+        # Child's Button5 wins inheritance KEEP_EXISTING over parent's "gear_toggle"
         assert merged.inputs["buttons"]["BUTTON_5"].command == "gear_up"
 
     def test_export_devices_reflect_aliased_inherited_profile(
-        self, alias_service_a_to_b
+        self, alias_service_a_to_b, use_keep_existing_defaults
     ):
         """Full pipeline: inheritance + aliasing + export device construction.
 
@@ -186,12 +228,17 @@ class TestAliasAndInheritanceCombined:
         assert len(export_devices) == 1
         ed = export_devices[0]
         assert ed.device_id == GUID_B
-        assert ed.device.inputs["buttons"]["BUTTON_1"].command == "missile"
+        # Source wins primary; target's BUTTON_1 demoted to modifier
+        assert ed.device.inputs["buttons"]["BUTTON_1"].command == "fire"
         assert ed.device.inputs["buttons"]["BUTTON_2"].command == "flare"
         assert ed.device.inputs["buttons"]["BUTTON_3"].command == "chaff"
+        assert any(
+            mod.command == "missile"
+            for mod in ed.device.inputs["buttons"]["BUTTON_1"].modifiers
+        )
 
     def test_old_ordering_bug_aliasing_lost_after_inheritance(
-        self, alias_service_a_to_b
+        self, alias_service_a_to_b, use_keep_existing_defaults
     ):
         """Regression: running aliasing BEFORE inheritance loses alias resolution.
 
@@ -240,10 +287,14 @@ class TestAliasAndInheritanceCombined:
         assert GUID_A not in child_wrapper.profile.devices
         assert GUID_B in child_wrapper.profile.devices
         merged = child_wrapper.profile.devices[GUID_B]
+        # No BUTTON_1 conflict: parent doesn't have BUTTON_1 on A
         assert merged.inputs["buttons"]["BUTTON_1"].command == "missile"
+        # Parent's A.BUTTON_3 "chaff" gap-fills into canonical B
         assert merged.inputs["buttons"]["BUTTON_3"].command == "chaff"
 
-    def test_no_parents_aliasing_survives(self, alias_service_a_to_b):
+    def test_no_parents_aliasing_survives(
+        self, alias_service_a_to_b, use_keep_existing_defaults
+    ):
         """Profile with no parents — aliasing is applied and survives
         because inheritance returns early without modifying wrapper.profile."""
         mock_pw = _make_mock_plugin_wrapper()

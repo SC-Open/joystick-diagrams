@@ -211,25 +211,33 @@ def test_replace_input_all_modifiers():
 
 
 def test_svg_sanitization():
+    # Draw.io SVGs embed mxgraph editor XML inside the root <svg>'s
+    # content="..." attribute, so replacement tokens land inside a
+    # "-delimited attribute value. Raw " / ' in the replacement corrupts the
+    # SVG with an XML "attributes construct error", so they must be escaped.
+    # Browsers decode &quot; back to " when rendering the visible <text> /
+    # <foreignObject><div> content, so users still see the quote character.
     tests = [
-        # Passthrough for ordinary text
         ("test", "test"),
         # XML specials always escaped
         ("a & b", "a &amp; b"),
         ("a < b > c", "a &lt; b &gt; c"),
-        # Quotes must be escaped — draw.io templates embed replacements inside
-        # HTML-entity-escaped XML attributes (value=&quot;TOKEN&quot;), so a
-        # raw " or ' in the command closes the attribute and corrupts the SVG.
-        # Regression: https://github.com/Rexeh/joystick-diagrams V2.1.0 shipped
-        # with saxutils.escape() default args (no quote escaping), breaking
-        # exports for DCS commands like: Ready for "precontact".
-        ('Ready for "precontact"', "Ready for &quot;precontact&quot;"),
+        # Raw quotes must be escaped — otherwise they terminate the draw.io
+        # content="..." attribute and the SVG fails to parse.
+        (
+            '"Prepare Weapons" command to gunner',
+            "&quot;Prepare Weapons&quot; command to gunner",
+        ),
         ("it's a test", "it&apos;s a test"),
-        # Already-escaped input is normalised, not double-escaped (the unescape
-        # step is the intent of commit 956bf30 — allow DCS descriptions that
-        # arrive pre-escaped to round-trip cleanly)
+        # Pre-escaped input is normalised, not double-escaped (commit 956bf30
+        # — DCS descriptions that arrive pre-escaped round-trip cleanly).
         ("a &amp; b", "a &amp; b"),
         ("a &lt; b", "a &lt; b"),
+        # Idempotency for quote entities: sanitize(sanitize(x)) == sanitize(x).
+        # Without this, a double call would turn &quot; into &amp;quot; and the
+        # visible SVG text would read &quot;Prepare Weapons&quot; in the browser.
+        ("&quot;Prepare Weapons&quot;", "&quot;Prepare Weapons&quot;"),
+        ("it&apos;s a test", "it&apos;s a test"),
     ]
 
     for test_value, expected_return in tests:

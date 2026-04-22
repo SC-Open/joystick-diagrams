@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 from joystick_diagrams.exceptions import JoystickDiagramsError
+from joystick_diagrams.input_routing import RouteKey, RouteTarget
 from joystick_diagrams.plugins.joystick_gremlin_plugin.joystick_gremlin import (
     JoystickGremlinParser,
 )
@@ -33,6 +34,15 @@ def parser_hat_buttons():
 @pytest.fixture
 def parser_virtual_buttons():
     return JoystickGremlinParser(TEST_DATA_DIR / "gremlin_hat_virtual_buttons.xml")
+
+
+@pytest.fixture
+def parser_vjoy_routing():
+    return JoystickGremlinParser(TEST_DATA_DIR / "gremlin_vjoy_routing.xml")
+
+
+PHYSICAL_STICK_GUID_VJOY = "03f2f260-b49d-11ea-8001-444553540000"
+VJOY_DEVICE_1_GUID = "492ead50-d1e0-11ef-8002-444553540000"
 
 
 # --- Validation Tests ---
@@ -286,3 +296,156 @@ class TestModeInheritance:
         assert collection.get_profile("a10") is not None
         assert collection.get_profile("fa18") is not None
         assert collection.get_profile("ka50") is not None
+
+
+# --- vJoy Routing Tests ---
+
+
+class TestVjoyRouting:
+    def test_basic_container_produces_single_route_with_empty_qualifier(
+        self, parser_vjoy_routing
+    ):
+        """<container type="basic"> with one <remap button="7" vjoy="1"/> yields
+        a single route keyed on vJoy BUTTON_7 with qualifier ""."""
+        collection = parser_vjoy_routing.create_dictionary()
+        profile = collection.get_profile("default")
+
+        key = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_7")
+        assert key in profile.input_routes
+
+        targets = profile.input_routes[key]
+        assert len(targets) == 1
+        assert targets[0] == RouteTarget(
+            PHYSICAL_STICK_GUID_VJOY, "buttons", "BUTTON_1", ""
+        )
+
+    def test_tempo_container_produces_short_and_long_routes(self, parser_vjoy_routing):
+        """<container type="tempo"> with two action-sets yields two routes,
+        qualifiers 'Short' then 'Long'."""
+        collection = parser_vjoy_routing.create_dictionary()
+        profile = collection.get_profile("default")
+
+        short_key = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_108")
+        long_key = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_109")
+
+        assert profile.input_routes[short_key] == [
+            RouteTarget(PHYSICAL_STICK_GUID_VJOY, "buttons", "BUTTON_2", "Short")
+        ]
+        assert profile.input_routes[long_key] == [
+            RouteTarget(PHYSICAL_STICK_GUID_VJOY, "buttons", "BUTTON_2", "Long")
+        ]
+
+    def test_conditional_container_produces_conditional_qualifier(
+        self, parser_vjoy_routing
+    ):
+        """A basic container with an <activation-condition> child yields a
+        route qualifier 'Conditional'."""
+        collection = parser_vjoy_routing.create_dictionary()
+        profile = collection.get_profile("default")
+
+        key = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_50")
+        assert profile.input_routes[key] == [
+            RouteTarget(PHYSICAL_STICK_GUID_VJOY, "buttons", "BUTTON_3", "Conditional")
+        ]
+
+    def test_axis_remap_produces_axis_route(self, parser_vjoy_routing):
+        """<remap axis="4" vjoy="1"/> on a physical AXIS_X yields an axis-typed
+        route keyed on vJoy AXIS_RX."""
+        collection = parser_vjoy_routing.create_dictionary()
+        profile = collection.get_profile("default")
+
+        key = RouteKey(VJOY_DEVICE_1_GUID, "axis", "AXIS_RX")
+        assert profile.input_routes[key] == [
+            RouteTarget(PHYSICAL_STICK_GUID_VJOY, "axis", "AXIS_X", "")
+        ]
+
+    def test_no_routes_on_profiles_without_remaps(self, parser_hat_buttons):
+        """Existing fixtures without <remap> should have empty input_routes."""
+        collection = parser_hat_buttons.create_dictionary()
+        for profile in collection.profiles.values():
+            assert profile.input_routes == {}
+
+
+@pytest.fixture
+def parser_route_inheritance():
+    return JoystickGremlinParser(TEST_DATA_DIR / "gremlin_route_inheritance.xml")
+
+
+class TestRouteInheritance:
+    def test_child_inherits_parent_routes_when_missing(self, parser_route_inheritance):
+        """Combat inherits Base; Combat has no route for BUTTON_50 (Base's route
+        on physical BUTTON_1) so it should inherit it."""
+        collection = parser_route_inheritance.create_dictionary()
+        combat = collection.get_profile("combat")
+
+        key_50 = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_50")
+        assert combat.input_routes[key_50] == [
+            RouteTarget(PHYSICAL_STICK_GUID_VJOY, "buttons", "BUTTON_1", "")
+        ]
+
+    def test_child_overrides_parent_route_for_same_source_key(
+        self, parser_route_inheritance
+    ):
+        """Combat defines its own route for BUTTON_99 on physical BUTTON_2 and
+        does NOT inherit Base's BUTTON_60->BUTTON_2 route for the same physical
+        target. Specifically: Combat's input_routes has BUTTON_99 but not
+        BUTTON_60 (Base's override)."""
+        collection = parser_route_inheritance.create_dictionary()
+        combat = collection.get_profile("combat")
+
+        key_99 = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_99")
+        assert combat.input_routes[key_99] == [
+            RouteTarget(PHYSICAL_STICK_GUID_VJOY, "buttons", "BUTTON_2", "")
+        ]
+
+        # Base had BUTTON_60 -> BUTTON_2. Combat overrides physical BUTTON_2 with
+        # its own <remap>, so the parent route for BUTTON_60 should not be
+        # inherited (the physical input already has its own binding in Combat).
+        key_60 = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_60")
+        assert key_60 not in combat.input_routes
+
+    def test_base_mode_unchanged_by_inheritance(self, parser_route_inheritance):
+        """Base's own routes should remain intact."""
+        collection = parser_route_inheritance.create_dictionary()
+        base = collection.get_profile("base")
+
+        key_50 = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_50")
+        key_60 = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_60")
+        assert key_50 in base.input_routes
+        assert key_60 in base.input_routes
+
+
+@pytest.fixture
+def parser_container_qualifiers():
+    return JoystickGremlinParser(TEST_DATA_DIR / "gremlin_container_qualifiers.xml")
+
+
+class TestContainerQualifiers:
+    def test_smart_toggle_produces_toggle_qualifier(self, parser_container_qualifiers):
+        """<container type="smart_toggle"> with one action-set yields
+        qualifier 'Toggle'."""
+        collection = parser_container_qualifiers.create_dictionary()
+        profile = collection.get_profile("default")
+
+        key = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_10")
+        assert profile.input_routes[key] == [
+            RouteTarget(PHYSICAL_STICK_GUID_VJOY, "buttons", "BUTTON_1", "Toggle")
+        ]
+
+    def test_double_tap_produces_single_and_double_qualifiers(
+        self, parser_container_qualifiers
+    ):
+        """<container type="double_tap"> with two action-sets yields
+        qualifiers 'Single' then 'Double'."""
+        collection = parser_container_qualifiers.create_dictionary()
+        profile = collection.get_profile("default")
+
+        single_key = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_20")
+        double_key = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_21")
+
+        assert profile.input_routes[single_key] == [
+            RouteTarget(PHYSICAL_STICK_GUID_VJOY, "buttons", "BUTTON_2", "Single")
+        ]
+        assert profile.input_routes[double_key] == [
+            RouteTarget(PHYSICAL_STICK_GUID_VJOY, "buttons", "BUTTON_2", "Double")
+        ]

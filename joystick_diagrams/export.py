@@ -102,7 +102,7 @@ def populate_template(export_device: ExportDevice) -> str:
         resolved_command = _resolve_command(input_object.command)
         modified_template_data = replace_input_string(
             input_key,
-            sanitize_string_for_svg(resolved_command),
+            resolved_command,
             modified_template_data,
         )
 
@@ -132,7 +132,21 @@ def populate_template(export_device: ExportDevice) -> str:
 
 
 def sanitize_string_for_svg(value_to_sanitize: str) -> str:
-    return escape(unescape(value_to_sanitize), {'"': "&quot;", "'": "&apos;"})
+    """Safely sanitize a string for inclusion in the SVG template.
+
+    Draw.io SVGs store the mxgraph editor XML inside the root ``<svg>``
+    element's ``content="..."`` attribute, so replacement tokens appear inside
+    an attribute value delimited by ``"``. A raw ``"`` or ``'`` in the
+    replacement would terminate that attribute and produce an invalid SVG
+    ("attributes construct error" on load). We therefore escape quotes in
+    addition to ``& < >``. The unescape-then-escape pair is idempotent: it
+    normalises already-escaped input (``&amp;``/``&quot;``/``&apos;`` etc.) so
+    a value that passes through sanitize twice doesn't become ``&amp;quot;``.
+    """
+    return escape(
+        unescape(value_to_sanitize, {"&quot;": '"', "&apos;": "'"}),
+        {'"': "&quot;", "'": "&apos;"},
+    )
 
 
 def replace_input_modifiers_string(

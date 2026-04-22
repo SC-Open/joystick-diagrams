@@ -2,6 +2,7 @@
 
 Author: Robert Cox
 """
+
 import logging
 from pathlib import Path
 from xml.dom import minidom
@@ -9,9 +10,15 @@ from xml.dom import minidom
 from joystick_diagrams.exceptions import JoystickDiagramsError
 from joystick_diagrams.input.axis import Axis, AxisDirection
 from joystick_diagrams.input.button import Button
-from joystick_diagrams.input.device import Device_
+from joystick_diagrams.input.device import (
+    INPUT_AXIS_KEY,
+    INPUT_BUTTON_KEY,
+    Device_,
+)
 from joystick_diagrams.input.hat import Hat, HatDirection
+from joystick_diagrams.input.profile import Profile_
 from joystick_diagrams.input.profile_collection import ProfileCollection
+from joystick_diagrams.input_routing import RouteKey, RouteTarget
 
 _logger = logging.getLogger(__name__)
 
@@ -78,6 +85,10 @@ class JoystickGremlinParser:
         """
         profile_collection = ProfileCollection()
 
+        # Build index -> vjoy device GUID lookup from <vjoy-device> nodes,
+        # in document order. Gremlin's `vjoy="N"` attribute is 1-based.
+        vjoy_guid_by_index = self._build_vjoy_index()
+
         # Get all the modes
         modes = self.file.getElementsByTagName("mode")
 
@@ -106,11 +117,193 @@ class JoystickGremlinParser:
             for bind in mode.childNodes:
                 if bind.nodeType == bind.ELEMENT_NODE:
                     self._process_bind(_device_obj, bind, _device_guid)
+                    self._extract_routes(
+                        _active_profile, bind, _device_obj, vjoy_guid_by_index
+                    )
 
         # Resolve mode inheritance
         self._resolve_inheritance(profile_collection, inherit_map)
 
         return profile_collection
+
+    def _build_vjoy_index(self) -> dict[int, str]:
+        """Build 1-based index -> vJoy device GUID map from <vjoy-device> nodes."""
+        index_map: dict[int, str] = {}
+        for idx, node in enumerate(
+            self.file.getElementsByTagName("vjoy-device"), start=1
+        ):
+            raw_guid = node.getAttribute("device-guid")
+            if not raw_guid:
+                continue
+            try:
+                index_map[idx] = Device_.validate_guid(raw_guid)
+            except ValueError:
+                _logger.warning(f"Skipping vjoy-device with invalid GUID {raw_guid}")
+        return index_map
+
+    def _extract_routes(
+        self,
+        profile: Profile_,
+        bind: minidom.Element,
+        device_obj: Device_,
+        vjoy_guid_by_index: dict[int, str],
+    ) -> None:
+        """Extract cross-device input routes from a button/axis binding's containers.
+
+        For every `<remap button|axis="X" vjoy="N"/>` found under the bind's
+        `<container>/<action-set>` children, record a RouteKey(vjoy target) ->
+        RouteTarget(physical source) entry on the active profile. Hats are not
+        handled in this pass.
+        """
+        bind_type = bind.tagName
+        if bind_type not in ("button", "axis"):
+            return
+
+        # Resolve this bind's physical identifier (BUTTON_N / AXIS_DIR).
+        try:
+            bind_identifier = int(bind.getAttribute("id"))
+        except ValueError:
+            return
+
+        if bind_type == "button":
+            physical_input_type = INPUT_BUTTON_KEY
+            physical_input_id = Button(bind_identifier).identifier
+        else:  # axis
+            axis_direction = AXIS_ID_MAP.get(bind_identifier)
+            if axis_direction is None:
+                return
+            physical_input_type = INPUT_AXIS_KEY
+            physical_input_id = Axis(axis_direction).identifier
+
+        source = RouteTarget(
+            device_guid=device_obj.guid,
+            input_type=physical_input_type,
+            input_id=physical_input_id,
+            qualifier="",
+        )
+        for container in bind.childNodes:
+            if (
+                container.nodeType != container.ELEMENT_NODE
+                or container.tagName != "container"
+            ):
+                continue
+            self._extract_container_routes(
+                container, profile, source, vjoy_guid_by_index
+            )
+
+    def _extract_container_routes(
+        self,
+        container: minidom.Element,
+        profile: Profile_,
+        source: RouteTarget,
+        vjoy_guid_by_index: dict[int, str],
+    ) -> None:
+        """Walk a single <container> and record routes for its <action-set>s.
+
+        `source` carries the physical device and input that routes should
+        point back to; its qualifier field is ignored and the per-action-set
+        qualifier is resolved from the container shape.
+        """
+        container_type = container.getAttribute("type")
+        has_condition = bool(container.getElementsByTagName("activation-condition"))
+
+        action_sets = [
+            node
+            for node in container.childNodes
+            if node.nodeType == node.ELEMENT_NODE and node.tagName == "action-set"
+        ]
+
+        for action_set_index, action_set in enumerate(action_sets):
+            qualifier = self._resolve_qualifier(
+                container_type, has_condition, action_set_index, len(action_sets)
+            )
+            for remap in action_set.getElementsByTagName("remap"):
+                route_key = self._route_key_for_remap(remap, vjoy_guid_by_index)
+                if route_key is None:
+                    continue
+                target = source._replace(qualifier=qualifier)
+                profile.input_routes.setdefault(route_key, []).append(target)
+
+    @staticmethod
+    def _resolve_qualifier(
+        container_type: str,
+        has_condition: bool,
+        action_set_index: int,
+        action_set_count: int,
+    ) -> str:
+        """Derive a route qualifier from container shape.
+
+        - type="basic": "" (single unqualified action-set). If a condition
+          is attached, qualifier is "Conditional".
+        - type="tempo" with 2 action-sets: "Short" then "Long".
+        - type="smart_toggle": "Toggle" (single action-set, toggles on/off).
+        - type="double_tap" with 2 action-sets: "Single" then "Double".
+        - Anything else with a condition: "Conditional".
+        - Fallback: "".
+        """
+        if container_type == "tempo" and action_set_count >= 2:
+            return "Short" if action_set_index == 0 else "Long"
+        if container_type == "double_tap" and action_set_count >= 2:
+            return "Single" if action_set_index == 0 else "Double"
+        if container_type == "smart_toggle":
+            return "Toggle"
+        if has_condition:
+            return "Conditional"
+        return ""
+
+    @staticmethod
+    def _route_key_for_remap(
+        remap: minidom.Element, vjoy_guid_by_index: dict[int, str]
+    ) -> RouteKey | None:
+        """Resolve a <remap> element into a RouteKey, or None if unsupported."""
+        vjoy_guid = JoystickGremlinParser._resolve_vjoy_guid(remap, vjoy_guid_by_index)
+        if vjoy_guid is None:
+            return None
+        if remap.hasAttribute("button"):
+            return JoystickGremlinParser._button_route_key(remap, vjoy_guid)
+        if remap.hasAttribute("axis"):
+            return JoystickGremlinParser._axis_route_key(remap, vjoy_guid)
+        return None
+
+    @staticmethod
+    def _resolve_vjoy_guid(
+        remap: minidom.Element, vjoy_guid_by_index: dict[int, str]
+    ) -> str | None:
+        vjoy_raw = remap.getAttribute("vjoy")
+        if not vjoy_raw:
+            return None
+        try:
+            vjoy_index = int(vjoy_raw)
+        except ValueError:
+            return None
+        return vjoy_guid_by_index.get(vjoy_index)
+
+    @staticmethod
+    def _button_route_key(remap: minidom.Element, vjoy_guid: str) -> RouteKey | None:
+        try:
+            button_id = int(remap.getAttribute("button"))
+        except ValueError:
+            return None
+        return RouteKey(
+            device_guid=vjoy_guid,
+            input_type=INPUT_BUTTON_KEY,
+            input_id=Button(button_id).identifier,
+        )
+
+    @staticmethod
+    def _axis_route_key(remap: minidom.Element, vjoy_guid: str) -> RouteKey | None:
+        try:
+            axis_id = int(remap.getAttribute("axis"))
+        except ValueError:
+            return None
+        axis_direction = AXIS_ID_MAP.get(axis_id)
+        if axis_direction is None:
+            return None
+        return RouteKey(
+            device_guid=vjoy_guid,
+            input_type=INPUT_AXIS_KEY,
+            input_id=Axis(axis_direction).identifier,
+        )
 
     def _process_bind(
         self, device_obj: Device_, bind: minidom.Element, device_guid: str
@@ -219,9 +412,41 @@ class JoystickGremlinParser:
                         input_obj.input_control, input_obj.command
                     )
 
+        self._merge_parent_routes_into_child(parent_profile, child_profile, device_guid)
+
         _logger.debug(
             f"Inherited '{parent_mode}' into '{child_mode}' for device {device_guid}"
         )
+
+    @staticmethod
+    def _merge_parent_routes_into_child(
+        parent_profile: Profile_, child_profile: Profile_, device_guid: str
+    ) -> None:
+        """Copy parent routes whose physical target is `device_guid` into child.
+
+        Skip a parent route if:
+        - the child already has any route targeting that physical input
+          (child's own <remap> on the same physical input takes precedence), or
+        - the child already has its own entry for the same RouteKey.
+        """
+        child_routed_phys: set[tuple[str, str]] = set()
+        for targets in child_profile.input_routes.values():
+            for target in targets:
+                if target.device_guid == device_guid:
+                    child_routed_phys.add((target.input_type, target.input_id))
+
+        for route_key, parent_targets in parent_profile.input_routes.items():
+            if route_key in child_profile.input_routes:
+                continue
+            inherited: list[RouteTarget] = []
+            for target in parent_targets:
+                if target.device_guid != device_guid:
+                    continue
+                if (target.input_type, target.input_id) in child_routed_phys:
+                    continue
+                inherited.append(target)
+            if inherited:
+                child_profile.input_routes[route_key] = inherited
 
     def extract_hats(self, hat_node: minidom.Element) -> list[tuple[Hat, str]]:
         """Extract the hat positions for a given HAT node.

@@ -4,6 +4,7 @@ from unittest.mock import patch
 
 import pytest
 
+from joystick_diagrams.conflict_strategy import AliasConflictStrategy
 from joystick_diagrams.db.device_alias_service import DeviceAliasService
 from joystick_diagrams.input.button import Button
 from joystick_diagrams.input.profile import Profile_
@@ -76,11 +77,12 @@ class TestApplyAliasesToProfile:
         assert result.devices[GUID_B].guid == GUID_B
         assert len(result.devices) == 1
 
-    def test_source_and_target_exist_inputs_merge_target_wins(
+    def test_source_and_target_conflict_concatenate_strategy(
         self, alias_service_a_to_b
     ):
-        """When both source and target GUIDs exist in same profile, inputs merge
-        and the target device's bindings take priority on conflict."""
+        """CONCATENATE strategy: source's primary is written first, joined with
+        the target's primary via the concatenation separator. Non-conflicting
+        inputs gap-fill unchanged."""
         from joystick_diagrams.app_state import AppState
 
         profile = Profile_("test")
@@ -92,15 +94,43 @@ class TestApplyAliasesToProfile:
         dev_a.create_input(Button(1), "fire")
         dev_a.create_input(Button(2), "flare")
 
-        result = AppState._apply_aliases_to_profile(profile, alias_service_a_to_b)
+        result = AppState._apply_aliases_to_profile(
+            profile, alias_service_a_to_b, strategy=AliasConflictStrategy.CONCATENATE
+        )
 
         assert GUID_A not in result.devices
         assert GUID_B in result.devices
         merged = result.devices[GUID_B]
-        # Button 1 should keep target's "missile", not source's "fire"
-        assert merged.inputs["buttons"]["BUTTON_1"].command == "missile"
-        # Button 2 should come from source
+        # Source-wins-primary: "fire" appears first, target "missile" appended
+        # with its device-name as a bracketed qualifier so the user can see
+        # where the loser segment came from.
+        assert (
+            merged.inputs["buttons"]["BUTTON_1"].command == "fire | [DeviceB] missile"
+        )
+        # Gap-fill: button 2 comes from source.
         assert merged.inputs["buttons"]["BUTTON_2"].command == "flare"
+
+    def test_source_and_target_conflict_modifier_strategy(self, alias_service_a_to_b):
+        """MODIFIER strategy: source's primary wins; target's primary is promoted
+        to a Modifier keyed by the target device's name."""
+        from joystick_diagrams.app_state import AppState
+
+        profile = Profile_("test")
+        dev_b = profile.add_device(GUID_B, "DeviceB")
+        dev_b.create_input(Button(1), "missile")
+        dev_a = profile.add_device(GUID_A, "DeviceA")
+        dev_a.create_input(Button(1), "fire")
+
+        result = AppState._apply_aliases_to_profile(
+            profile, alias_service_a_to_b, strategy=AliasConflictStrategy.MODIFIER
+        )
+
+        merged = result.devices[GUID_B]
+        input_ = merged.inputs["buttons"]["BUTTON_1"]
+        assert input_.command == "fire"
+        assert len(input_.modifiers) == 1
+        assert input_.modifiers[0].command == "missile"
+        assert input_.modifiers[0].modifiers == {"DeviceB"}
 
     def test_unaliased_devices_pass_through_unchanged(self, alias_service_a_to_b):
         """Devices with GUIDs that have no alias pass through unchanged."""
