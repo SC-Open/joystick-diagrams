@@ -101,8 +101,12 @@ class TestApplyAliasesToProfile:
         assert GUID_A not in result.devices
         assert GUID_B in result.devices
         merged = result.devices[GUID_B]
-        # Source-wins-primary: "fire" appears first, target "missile" appended.
-        assert merged.inputs["buttons"]["BUTTON_1"].command == "fire | missile"
+        # Source-wins-primary: "fire" appears first, target "missile" appended
+        # with its device-name as a bracketed qualifier so the user can see
+        # where the loser segment came from.
+        assert (
+            merged.inputs["buttons"]["BUTTON_1"].command == "fire | [DeviceB] missile"
+        )
         # Gap-fill: button 2 comes from source.
         assert merged.inputs["buttons"]["BUTTON_2"].command == "flare"
 

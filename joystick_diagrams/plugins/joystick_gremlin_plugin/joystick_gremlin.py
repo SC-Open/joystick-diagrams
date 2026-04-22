@@ -236,11 +236,17 @@ class JoystickGremlinParser:
         - type="basic": "" (single unqualified action-set). If a condition
           is attached, qualifier is "Conditional".
         - type="tempo" with 2 action-sets: "Short" then "Long".
+        - type="smart_toggle": "Toggle" (single action-set, toggles on/off).
+        - type="double_tap" with 2 action-sets: "Single" then "Double".
         - Anything else with a condition: "Conditional".
         - Fallback: "".
         """
         if container_type == "tempo" and action_set_count >= 2:
             return "Short" if action_set_index == 0 else "Long"
+        if container_type == "double_tap" and action_set_count >= 2:
+            return "Single" if action_set_index == 0 else "Double"
+        if container_type == "smart_toggle":
+            return "Toggle"
         if has_condition:
             return "Conditional"
         return ""

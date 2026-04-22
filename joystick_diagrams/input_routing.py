@@ -100,7 +100,13 @@ def apply_routes(
 
         for target in targets:
             dst_tuple = (target.device_guid, target.input_type, target.input_id)
-            pending.setdefault(dst_tuple, []).append((source_command, target.qualifier))
+            # When the container has no qualifier (e.g. basic type), fall back
+            # to the source input's identifier so CONCATENATE/MODIFIER still
+            # carry context about where the routed command originated.
+            effective_qualifier = target.qualifier or route_key.input_id
+            pending.setdefault(dst_tuple, []).append(
+                (source_command, effective_qualifier)
+            )
 
     for (dst_guid, dst_type, dst_id), items in pending.items():
         control = _make_control(dst_type, dst_id)
@@ -128,7 +134,7 @@ def apply_routes(
             apply_input_conflict(
                 winner=dst_input,
                 loser=loser,
-                loser_qualifier=qualifier or "routed",
+                loser_qualifier=qualifier,
                 strategy=strategy,
             )
 

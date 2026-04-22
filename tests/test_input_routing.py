@@ -165,8 +165,9 @@ class TestApplyRoutes:
         assert input_.modifiers[0].modifiers == {"Long"}
         assert input_.modifiers[0].command == "Target Lock"
 
-    def test_tempo_concatenate_strategy_joins_commands(self):
-        """Two tempo routes under CONCATENATE strategy → one combined command."""
+    def test_tempo_concatenate_strategy_joins_commands_with_qualifier(self):
+        """Two tempo routes under CONCATENATE preserve the loser's qualifier
+        as a bracketed prefix on the joined segment."""
         profile = Profile_("test")
         vjoy = profile.add_device(VJOY_GUID, "vJoy")
         vjoy.create_input(Button(108), "Fire Weapon")
@@ -190,7 +191,36 @@ class TestApplyRoutes:
 
         phys = profile.get_device(PHYS_GUID)
         assert (
-            phys.get_input("buttons", "BUTTON_1").command == "Fire Weapon | Target Lock"
+            phys.get_input("buttons", "BUTTON_1").command
+            == "Fire Weapon | [Long] Target Lock"
+        )
+
+    def test_existing_binding_plus_tempo_route_concatenate_shows_qualifier(self):
+        """User's reported scenario: native DCS binding on physical button +
+        routed tempo-long command under CONCATENATE. The qualifier must
+        survive in the joined output so short/long context isn't lost."""
+        profile = Profile_("test")
+        vjoy = profile.add_device(VJOY_GUID, "vJoy")
+        vjoy.create_input(Button(108), "Kneeboard ON/OFF")
+        phys = profile.add_device(PHYS_GUID, "Physical Stick")
+        phys.create_input(Button(3), "Kneeboard Next Page")
+
+        routes = {
+            RouteKey(VJOY_GUID, "buttons", "BUTTON_108"): [
+                RouteTarget(PHYS_GUID, "buttons", "BUTTON_3", "Long"),
+            ],
+        }
+
+        apply_routes(
+            profile,
+            routes,
+            strategy=AliasConflictStrategy.CONCATENATE,
+            device_names={},
+        )
+
+        assert (
+            profile.get_device(PHYS_GUID).get_input("buttons", "BUTTON_3").command
+            == "Kneeboard Next Page | [Long] Kneeboard ON/OFF"
         )
 
     def test_destination_with_existing_binding_merges_via_conflict_strategy(self):
@@ -219,6 +249,66 @@ class TestApplyRoutes:
         assert input_.command == "Existing Cmd"
         assert len(input_.modifiers) == 1
         assert input_.modifiers[0].modifiers == {"Short"}
+        assert input_.modifiers[0].command == "Routed Cmd"
+
+    def test_basic_route_concatenate_uses_source_identifier_as_qualifier(self):
+        """Route from a basic container has an empty container qualifier;
+        apply_routes falls back to the source input's identifier (BUTTON_108)
+        so the routed command still carries context about where it came from
+        under CONCATENATE — the user can tell it came from vJoy button 108
+        rather than being mystery-appended."""
+        profile = Profile_("test")
+        vjoy = profile.add_device(VJOY_GUID, "vJoy")
+        vjoy.create_input(Button(108), "Routed Cmd")
+        phys = profile.add_device(PHYS_GUID, "Physical Stick")
+        phys.create_input(Button(1), "Existing Cmd")
+
+        routes = {
+            RouteKey(VJOY_GUID, "buttons", "BUTTON_108"): [
+                RouteTarget(PHYS_GUID, "buttons", "BUTTON_1", ""),
+            ],
+        }
+
+        apply_routes(
+            profile,
+            routes,
+            strategy=AliasConflictStrategy.CONCATENATE,
+            device_names={},
+        )
+
+        assert (
+            profile.get_device(PHYS_GUID).get_input("buttons", "BUTTON_1").command
+            == "Existing Cmd | [BUTTON_108] Routed Cmd"
+        )
+
+    def test_basic_route_modifier_uses_input_identifier_as_fallback(self):
+        """Route from a basic container has an empty qualifier; under
+        MODIFIER the promoted modifier's key-set falls back to the loser
+        input's identifier (BUTTON_108) — more informative than a literal
+        'routed' sentinel."""
+        profile = Profile_("test")
+        vjoy = profile.add_device(VJOY_GUID, "vJoy")
+        vjoy.create_input(Button(108), "Routed Cmd")
+        phys = profile.add_device(PHYS_GUID, "Physical Stick")
+        phys.create_input(Button(1), "Existing Cmd")
+
+        routes = {
+            RouteKey(VJOY_GUID, "buttons", "BUTTON_108"): [
+                RouteTarget(PHYS_GUID, "buttons", "BUTTON_1", ""),
+            ],
+        }
+
+        apply_routes(
+            profile,
+            routes,
+            strategy=AliasConflictStrategy.MODIFIER,
+            device_names={},
+        )
+
+        input_ = profile.get_device(PHYS_GUID).get_input("buttons", "BUTTON_1")
+        assert input_.command == "Existing Cmd"
+        assert len(input_.modifiers) == 1
+        assert input_.modifiers[0].modifiers == {"BUTTON_108"}
         assert input_.modifiers[0].command == "Routed Cmd"
 
     def test_non_empty_source_device_not_dropped(self):

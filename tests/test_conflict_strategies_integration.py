@@ -104,7 +104,7 @@ class TestGroupBInheritanceOnly:
         )
 
         result = _btn_input(merged, GUID_D1, "BUTTON_1")
-        assert result.command == "Shoot | Aim"
+        assert result.command == "Shoot | [P2] Aim"
         assert result.modifiers == []
 
     def test_b3c_conflict_modifier_promotes_parent_under_parent_name(self):
@@ -243,7 +243,7 @@ class TestGroupCAliasOnly:
         )
 
         input_ = _btn_input(result, GUID_D1, "BUTTON_1")
-        assert input_.command == "Dodge | Shoot"
+        assert input_.command == "Dodge | [D1-Name] Shoot"
         assert input_.modifiers == []
 
     def test_c4_three_way_alias_modifier_first_source_wins_primary(self):
@@ -281,8 +281,9 @@ class TestGroupCAliasOnly:
         )
 
         input_ = _btn_input(result, GUID_D1, "BUTTON_1")
-        # First source wins primary, subsequent sources and target appended in order.
-        assert input_.command == "A | B | C"
+        # First source wins primary, subsequent sources and target appended in
+        # order — each loser segment prefixed with its device name.
+        assert input_.command == "A | [D3-Name] B | [D1-Name] C"
 
     def test_c5_source_with_modifiers_no_primary_conflict_gap_fill(self):
         """Source has input (with modifiers) on a key the target lacks → copy whole."""
@@ -395,7 +396,7 @@ class TestGroupDInheritanceAndAlias:
         )
         input_ = _btn_input(result, GUID_D1, "BUTTON_1")
         # "Aim" dropped by inheritance; source "Dodge" + target "Shoot".
-        assert input_.command == "Dodge | Shoot"
+        assert input_.command == "Dodge | [D1-Name] Shoot"
         assert input_.modifiers == []
 
     def test_d3_concatenate_plus_modifier(self):
@@ -408,9 +409,11 @@ class TestGroupDInheritanceAndAlias:
             [(GUID_D2, GUID_D1)],
         )
         input_ = _btn_input(result, GUID_D1, "BUTTON_1")
-        # Post-inheritance D1 holds "Shoot | Aim"; alias step promotes it as modifier.
+        # Post-inheritance D1 holds "Shoot | [P2] Aim"; alias step promotes it as modifier.
         assert input_.command == "Dodge"
-        assert _modifier_commands(input_) == {frozenset({"D1-Name"}): "Shoot | Aim"}
+        assert _modifier_commands(input_) == {
+            frozenset({"D1-Name"}): "Shoot | [P2] Aim"
+        }
 
     def test_d4_concatenate_plus_concatenate(self):
         child, parent = _group_d_profiles()
@@ -422,8 +425,10 @@ class TestGroupDInheritanceAndAlias:
             [(GUID_D2, GUID_D1)],
         )
         input_ = _btn_input(result, GUID_D1, "BUTTON_1")
-        # Full history preserved in primary.
-        assert input_.command == "Dodge | Shoot | Aim"
+        # Full history preserved in primary; each loser carries its qualifier.
+        # Inheritance merged D1 to "Shoot | [P2] Aim"; alias then folds source
+        # "Dodge" (winner) with target D1-Name as the loser segment.
+        assert input_.command == "Dodge | [D1-Name] Shoot | [P2] Aim"
         assert input_.modifiers == []
 
     def test_d5_modifier_plus_modifier(self):
@@ -455,8 +460,9 @@ class TestGroupDInheritanceAndAlias:
         )
         input_ = _btn_input(result, GUID_D1, "BUTTON_1")
         # Post-inheritance D1: primary="Shoot", mod {"P2"}: "Aim".
-        # Alias CONCATENATE: "Dodge | Shoot"; target's {"P2"}: "Aim" modifier carried through.
-        assert input_.command == "Dodge | Shoot"
+        # Alias CONCATENATE: "Dodge | [D1-Name] Shoot"; target's {"P2"}: "Aim"
+        # modifier carried through.
+        assert input_.command == "Dodge | [D1-Name] Shoot"
         assert _modifier_commands(input_) == {frozenset({"P2"}): "Aim"}
 
 
@@ -499,7 +505,9 @@ class TestGroupEVariants:
             [(GUID_D2, GUID_D1)],
         )
 
-        assert _btn_input(result, GUID_D1, "BUTTON_1").command == "Dodge | Shoot"
+        assert (
+            _btn_input(result, GUID_D1, "BUTTON_1").command == "Dodge | [D1-Name] Shoot"
+        )
         assert GUID_D2 not in result.devices
 
     def test_e4_strategy_switch_changes_output(self):
@@ -589,19 +597,19 @@ class TestStrategyDefaults:
         (
             InheritanceConflictStrategy.KEEP_EXISTING,
             AliasConflictStrategy.CONCATENATE,
-            "Dodge | Shoot",
+            "Dodge | [D1-Name] Shoot",
             {},
         ),
         (
             InheritanceConflictStrategy.CONCATENATE,
             AliasConflictStrategy.MODIFIER,
             "Dodge",
-            {frozenset({"D1-Name"}): "Shoot | Aim"},
+            {frozenset({"D1-Name"}): "Shoot | [P2] Aim"},
         ),
         (
             InheritanceConflictStrategy.CONCATENATE,
             AliasConflictStrategy.CONCATENATE,
-            "Dodge | Shoot | Aim",
+            "Dodge | [D1-Name] Shoot | [P2] Aim",
             {},
         ),
         (
@@ -616,7 +624,7 @@ class TestStrategyDefaults:
         (
             InheritanceConflictStrategy.MODIFIER,
             AliasConflictStrategy.CONCATENATE,
-            "Dodge | Shoot",
+            "Dodge | [D1-Name] Shoot",
             {frozenset({"P2"}): "Aim"},
         ),
     ],

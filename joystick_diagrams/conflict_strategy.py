@@ -86,7 +86,10 @@ def apply_input_conflict(
     strategy_value = strategy.value if isinstance(strategy, Enum) else str(strategy)
 
     if strategy_value == "CONCATENATE":
-        winner.command = f"{winner.command}{CONCATENATE_SEPARATOR}{loser.command}"
+        loser_segment = (
+            f"[{loser_qualifier}] {loser.command}" if loser_qualifier else loser.command
+        )
+        winner.command = f"{winner.command}{CONCATENATE_SEPARATOR}{loser_segment}"
     elif strategy_value == "MODIFIER":
         promoted_keys = {loser_qualifier}
         if winner._check_existing_modifier(promoted_keys) is None:

@@ -413,3 +413,39 @@ class TestRouteInheritance:
         key_60 = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_60")
         assert key_50 in base.input_routes
         assert key_60 in base.input_routes
+
+
+@pytest.fixture
+def parser_container_qualifiers():
+    return JoystickGremlinParser(TEST_DATA_DIR / "gremlin_container_qualifiers.xml")
+
+
+class TestContainerQualifiers:
+    def test_smart_toggle_produces_toggle_qualifier(self, parser_container_qualifiers):
+        """<container type="smart_toggle"> with one action-set yields
+        qualifier 'Toggle'."""
+        collection = parser_container_qualifiers.create_dictionary()
+        profile = collection.get_profile("default")
+
+        key = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_10")
+        assert profile.input_routes[key] == [
+            RouteTarget(PHYSICAL_STICK_GUID_VJOY, "buttons", "BUTTON_1", "Toggle")
+        ]
+
+    def test_double_tap_produces_single_and_double_qualifiers(
+        self, parser_container_qualifiers
+    ):
+        """<container type="double_tap"> with two action-sets yields
+        qualifiers 'Single' then 'Double'."""
+        collection = parser_container_qualifiers.create_dictionary()
+        profile = collection.get_profile("default")
+
+        single_key = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_20")
+        double_key = RouteKey(VJOY_DEVICE_1_GUID, "buttons", "BUTTON_21")
+
+        assert profile.input_routes[single_key] == [
+            RouteTarget(PHYSICAL_STICK_GUID_VJOY, "buttons", "BUTTON_2", "Single")
+        ]
+        assert profile.input_routes[double_key] == [
+            RouteTarget(PHYSICAL_STICK_GUID_VJOY, "buttons", "BUTTON_2", "Double")
+        ]
