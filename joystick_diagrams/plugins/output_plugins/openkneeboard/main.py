@@ -94,14 +94,20 @@ class OutputPlugin(OutputPluginInterface):
         return self.get_setting("output_folder") is not None
 
     def process_export(self, results: list[ExportResult]) -> bool:
+        # OpenKneeboard renders raster images — SVG results in the batch are
+        # irrelevant here and would silently get copied without being viewable.
+        png_results = [r for r in results if r.export_format == "PNG"]
+        if not png_results:
+            return True
+
         mode = self.get_setting("mode")
         organize = self.get_setting("organize_by_profile")
         use_subfolder = self.get_setting("use_subfolder")
 
         if mode == DCS_KNEEBOARD:
-            return self._export_dcs_kneeboard(results, organize, use_subfolder)
+            return self._export_dcs_kneeboard(png_results, organize, use_subfolder)
         elif mode == FOLDER_TAB:
-            return self._export_folder_tab(results, organize, use_subfolder)
+            return self._export_folder_tab(png_results, organize, use_subfolder)
 
         _logger.error(f"OpenKneeboard: unknown mode '{mode}'")
         return False
