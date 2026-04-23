@@ -100,10 +100,9 @@ def apply_routes(
 
         for target in targets:
             dst_tuple = (target.device_guid, target.input_type, target.input_id)
-            # When the container has no qualifier (e.g. basic type), fall back
-            # to the source input's identifier so CONCATENATE/MODIFIER still
-            # carry context about where the routed command originated.
-            effective_qualifier = target.qualifier or route_key.input_id
+            effective_qualifier = _resolve_loser_qualifier(
+                target.qualifier, route_key.input_id, strategy
+            )
             pending.setdefault(dst_tuple, []).append(
                 (source_command, effective_qualifier)
             )
@@ -139,6 +138,23 @@ def apply_routes(
             )
 
     _drop_empty_devices(profile)
+
+
+def _resolve_loser_qualifier(
+    target_qualifier: str, source_input_id: str, strategy: AliasConflictStrategy
+) -> str:
+    """Pick the qualifier string passed to apply_input_conflict for a route.
+
+    Basic containers have no qualifier. Under CONCATENATE we leave it empty
+    (bare join, no `[…]` prefix). Under MODIFIER we fall back to the source
+    input's identifier so the promoted modifier isn't keyed by the empty
+    string.
+    """
+    if target_qualifier:
+        return target_qualifier
+    if strategy == AliasConflictStrategy.MODIFIER:
+        return source_input_id
+    return ""
 
 
 def _make_control(input_type: str, input_id: str) -> Axis | Button | None:

@@ -1,6 +1,6 @@
 [project]
 name = "joystick-diagrams"
-version = "2.1.1"
+version = "2.2.0"
 description = "Automatically create diagrams for your throttles, joysticks and custom HID devices"
 readme = "readme.md"
 requires-python = ">=3.11, <3.13"
@@ -47,6 +47,7 @@ includes = [
     "joystick_diagrams.plugins.joystick_gremlin_plugin",
     "joystick_diagrams.plugins.fs2020_plugin",
     "joystick_diagrams.plugins.il2_sturmovik_plugin",
+    "joystick_diagrams.plugins.output_plugins.openkneeboard",
 ]
 packages = [
     "asyncio",
@@ -55,6 +56,7 @@ packages = [
     "joystick_diagrams.plugins.joystick_gremlin_plugin",
     "joystick_diagrams.plugins.fs2020_plugin",
     "joystick_diagrams.plugins.il2_sturmovik_plugin",
+    "joystick_diagrams.plugins.output_plugins.openkneeboard",
 ]
 include_files = [
     "./img",

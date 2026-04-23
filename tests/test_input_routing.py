@@ -251,12 +251,12 @@ class TestApplyRoutes:
         assert input_.modifiers[0].modifiers == {"Short"}
         assert input_.modifiers[0].command == "Routed Cmd"
 
-    def test_basic_route_concatenate_uses_source_identifier_as_qualifier(self):
-        """Route from a basic container has an empty container qualifier;
-        apply_routes falls back to the source input's identifier (BUTTON_108)
-        so the routed command still carries context about where it came from
-        under CONCATENATE — the user can tell it came from vJoy button 108
-        rather than being mystery-appended."""
+    def test_basic_route_concatenate_has_no_qualifier_prefix(self):
+        """Route from a basic container has an empty qualifier; under
+        CONCATENATE the joined string must be bare — no bracketed prefix,
+        since the user didn't configure a tempo/toggle qualifier to label
+        with. `[BUTTON_108]`-style prefixes would just add noise in the
+        common basic-remap case."""
         profile = Profile_("test")
         vjoy = profile.add_device(VJOY_GUID, "vJoy")
         vjoy.create_input(Button(108), "Routed Cmd")
@@ -278,7 +278,7 @@ class TestApplyRoutes:
 
         assert (
             profile.get_device(PHYS_GUID).get_input("buttons", "BUTTON_1").command
-            == "Existing Cmd | [BUTTON_108] Routed Cmd"
+            == "Existing Cmd | Routed Cmd"
         )
 
     def test_basic_route_modifier_uses_input_identifier_as_fallback(self):
