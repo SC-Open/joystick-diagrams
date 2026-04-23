@@ -1,6 +1,8 @@
 import logging
 from copy import deepcopy
 
+from PySide6.QtCore import QTimer
+
 from joystick_diagrams.conflict_strategy import (
     AliasConflictStrategy,
     apply_input_conflict,
@@ -82,6 +84,42 @@ class AppState:
 
         # Apply GUID alias resolution on fully inherited profiles
         self._apply_guid_aliases()
+
+    def reprocess_profiles_with_notice(
+        self, message: str = "Settings applied — profiles reprocessed"
+    ) -> None:
+        """Rebuild profile wrappers + surface a status-bar toast + invalidate
+        cached data pages so they rebuild on next visit.
+
+        Intended for UI handlers that mutate a *process-time* setting
+        (alias/inheritance strategy, plugin enable/disable, …) and need the
+        merged profile state refreshed. Safe to call when no plugins have
+        been run yet — the pipeline short-circuits to empty state.
+        """
+        self.process_profiles_from_collections()
+        if self.main_window is None:
+            return
+        try:
+            self._flash_status_label(message, 3000)
+        except (AttributeError, RuntimeError) as e:
+            _logger.debug(f"Could not flash status label: {e}")
+        try:
+            self.main_window._invalidate_data_pages()
+        except (AttributeError, RuntimeError) as e:
+            _logger.debug(f"Could not invalidate data pages: {e}")
+
+    def _flash_status_label(self, message: str, duration_ms: int) -> None:
+        """Temporarily replace main_window.statusLabel text with `message`.
+
+        The existing status-label text is restored after `duration_ms`. We
+        use the statusLabel instead of statusBar().showMessage() because the
+        main window adds two permanent widgets with stretch=1 to the status
+        bar, which crowd out the temporary-message area.
+        """
+        label = self.main_window.statusLabel
+        previous = label.text()
+        label.setText(message)
+        QTimer.singleShot(duration_ms, lambda: _restore_status_label(label, previous))
 
     def initialise_profile_wrappers(self):
         _logger.debug(f"Initialising {len(self.profile_wrappers)} profile wrappers ")
@@ -285,6 +323,18 @@ def _merge_alias_loser_into_winner(
                     loser_qualifier=loser.name,
                     strategy=strategy,
                 )
+
+
+def _restore_status_label(label, previous_text: str) -> None:
+    """QTimer callback: restore the prior statusLabel text.
+
+    Defensive against the label being torn down before the timer fires
+    (e.g. window closed mid-flash) — RuntimeError from PySide is swallowed.
+    """
+    try:
+        label.setText(previous_text)
+    except RuntimeError:
+        pass
 
 
 if __name__ == "__main__":

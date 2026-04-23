@@ -227,15 +227,24 @@ class SettingsPage(QMainWindow):
         if fmt:
             add_update_setting_value(DATE_FORMAT_SETTING_KEY, fmt)
 
+    # Process-time settings (those that bake into the merged profile state)
+    # must call appState.reprocess_profiles_with_notice(...) after persisting.
+    # Export-time settings (date format, open-after-export) don't need this.
     def _on_alias_strategy_changed(self, index: int):
         value = self.alias_strategy_combo.currentData()
         if value:
             add_update_setting_value(ALIAS_CONFLICT_STRATEGY_KEY, value)
+            self.appState.reprocess_profiles_with_notice(
+                "Alias merge strategy updated — profiles reprocessed"
+            )
 
     def _on_inheritance_strategy_changed(self, index: int):
         value = self.inheritance_strategy_combo.currentData()
         if value:
             add_update_setting_value(INHERITANCE_CONFLICT_STRATEGY_KEY, value)
+            self.appState.reprocess_profiles_with_notice(
+                "Inheritance merge strategy updated — profiles reprocessed"
+            )
 
     # ── Shared Plugin Helpers ──
 
