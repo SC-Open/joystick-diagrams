@@ -5,6 +5,7 @@ import qtawesome as qta
 from PySide6.QtCore import QCoreApplication, QSize, Qt, QUrl
 from PySide6.QtGui import QAction, QDesktopServices, QIcon
 from PySide6.QtWidgets import (
+    QFrame,
     QLabel,
     QMainWindow,
     QMenu,
@@ -14,6 +15,8 @@ from PySide6.QtWidgets import (
     QSizePolicy,
     QSpacerItem,
     QStackedWidget,
+    QToolButton,
+    QWidget,
 )
 
 from joystick_diagrams import version
@@ -35,7 +38,7 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
-        self._setup_help_menu()
+        self._setup_menu_bar()
 
         self.app = QCoreApplication.instance()
 
@@ -102,8 +105,7 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
         self.topnav_layout.setSpacing(0)
         self.topnav_layout.setContentsMargins(0, 5, 0, 5)
 
-        # Collapse the unused additional layout from Qt Designer
-        self.topnav_additional_layout.setContentsMargins(0, 0, 0, 0)
+        # Menu row uses topnav_additional_layout — see _setup_menu_bar
 
         # Plugins Menu Controls
 
@@ -173,50 +175,135 @@ class MainWindow(QMainWindow, main_window.Ui_MainWindow):
 
         self.check_for_new_version()
 
-    def _setup_help_menu(self):
-        self.menuBar().setNativeMenuBar(False)
+    def _setup_menu_bar(self):
+        # The Qt-Designer QMenuBar is pinned to 21px and setCornerWidget is
+        # unreliable across styles — hide it and use a custom row instead.
+        self.menuBar().hide()
 
-        help_menu = QMenu("&Help", self)
-        self.menuBar().addMenu(help_menu)
+        row = self.topnav_additional_layout
+        row.setContentsMargins(8, 4, 8, 4)
+        row.setSpacing(4)
 
-        # Community links
-        discord_action = QAction("Discord Community", self)
-        discord_action.triggered.connect(self._open_discord)
-        help_menu.addAction(discord_action)
+        # LEFT: Help popup
+        help_btn = QToolButton()
+        help_btn.setText("Help")
+        help_btn.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
+        help_btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
+        help_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        help_btn.setAutoRaise(True)
+        help_btn.setFixedHeight(26)
+        help_btn.setObjectName("jdMenuHelp")
+        help_btn.setMenu(self._build_help_menu(help_btn))
+        row.addWidget(help_btn)
 
-        website_action = QAction("Joystick Diagrams Website", self)
-        website_action.triggered.connect(self._open_website)
-        help_menu.addAction(website_action)
+        row.addStretch(1)
 
-        help_menu.addSeparator()
+        # RIGHT: external links
+        def link(icon_name, icon_color, text, tooltip, handler, variant="link"):
+            btn = QToolButton()
+            btn.setIcon(qta.icon(icon_name, color=icon_color))
+            btn.setIconSize(QSize(14, 14))
+            btn.setText(text)
+            btn.setToolTip(tooltip)
+            btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
+            btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            btn.setAutoRaise(True)
+            btn.setFixedHeight(26)
+            btn.setObjectName("jdMenuLinkCta" if variant == "cta" else "jdMenuLink")
+            btn.clicked.connect(handler)
+            return btn
 
-        # Troubleshooting
+        row.addWidget(
+            link(
+                "fa5s.globe",
+                "#9AA0A6",
+                "Website",
+                "joystick-diagrams.com",
+                self._open_website,
+            )
+        )
+        row.addWidget(
+            link(
+                "fa5b.github",
+                "#9AA0A6",
+                "GitHub",
+                "View source on GitHub",
+                self._open_github,
+            )
+        )
+        row.addWidget(
+            link(
+                "fa5b.discord",
+                "#9AA0A6",
+                "Discord",
+                "Join the Discord community",
+                self._open_discord,
+            )
+        )
+        row.addWidget(
+            link(
+                "fa5s.mug-hot",
+                "#F59E0B",
+                "Buy Me a Coffee",
+                "Support development",
+                self._open_buymeacoffee,
+                variant="cta",
+            )
+        )
+
+        # Thin divider under the row so it reads as a menu band
+        divider = QFrame()
+        divider.setFrameShape(QFrame.Shape.HLine)
+        divider.setObjectName("jdMenuDivider")
+        divider.setFixedHeight(1)
+        self.verticalLayout.insertWidget(1, divider)
+
+    def _build_help_menu(self, parent: QWidget) -> QMenu:
+        menu = QMenu(parent)
+
+        support_action = QAction("Support", self)
+        support_action.setToolTip("Get help on Discord")
+        support_action.triggered.connect(self._open_discord)
+        menu.addAction(support_action)
+
+        menu.addSeparator()
+
         open_logs_action = QAction("Open Logs Folder", self)
         open_logs_action.triggered.connect(self._open_logs_folder)
-        help_menu.addAction(open_logs_action)
+        menu.addAction(open_logs_action)
 
         self._debug_action = QAction("Debug Mode", self)
         self._debug_action.setCheckable(True)
         self._debug_action.setChecked(False)
         self._debug_action.triggered.connect(self._toggle_debug_mode)
-        help_menu.addAction(self._debug_action)
+        menu.addAction(self._debug_action)
 
-        help_menu.addSeparator()
+        menu.addSeparator()
 
-        # Info
         check_updates_action = QAction("Check for Updates", self)
         check_updates_action.triggered.connect(self._check_for_updates)
-        help_menu.addAction(check_updates_action)
+        menu.addAction(check_updates_action)
 
         about_action = QAction("About Joystick Diagrams", self)
         about_action.triggered.connect(self._show_about)
-        help_menu.addAction(about_action)
+        menu.addAction(about_action)
+
+        return menu
 
     def _open_discord(self):
         QDesktopServices.openUrl("https://discord.gg/UUyRUuX2dX")
 
     def _open_website(self):
         QDesktopServices.openUrl("https://joystick-diagrams.com")
+
+    def _open_github(self):
+        QDesktopServices.openUrl("https://github.com/Rexeh/joystick-diagrams")
+
+    def _open_buymeacoffee(self):
+        QDesktopServices.openUrl(
+            "https://www.paypal.com/cgi-bin/webscr"
+            "?cmd=_s-xclick&hosted_button_id=WLLDYGQM5Z39W&source=url"
+        )
 
     def _open_logs_folder(self):
         log_path = data_root() / "logs"

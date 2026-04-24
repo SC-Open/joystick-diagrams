@@ -11,7 +11,7 @@ from joystick_diagrams.plugins.plugin_settings import PluginMeta, PluginSettings
 class DCSSettings(PluginSettings):
     game_dir: Path | None = Field(
         default=None,
-        title="DCS World Folder",
+        title="DCS Saved Games Directory",
         json_schema_extra={
             "is_folder": True,
             "default_path": "~/Saved Games",

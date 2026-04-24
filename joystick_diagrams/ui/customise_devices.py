@@ -216,9 +216,7 @@ class CustomiseDevices(QWidget):
         self._alias_combo.currentIndexChanged.connect(self._on_alias_changed)
         detail_content_layout.addWidget(self._alias_combo)
 
-        alias_help = QLabel(
-            "Aliasing merges this device's bindings into the target device for export."
-        )
+        alias_help = QLabel("Makes this device appear as the target, merging bindings.")
         alias_help.setStyleSheet("color: #9AA0A6; font-style: italic; font-size: 11px;")
         alias_help.setWordWrap(True)
         detail_content_layout.addWidget(alias_help)

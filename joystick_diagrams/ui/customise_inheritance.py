@@ -27,11 +27,12 @@ class CustomiseInheritance(QWidget):
 
         # Help text explaining inheritance
         help_text = QLabel(
-            "Select a profile below, then add inherited profiles. "
-            "Binds from inherited profiles merge into the selected profile. "
-            "Higher in the list = higher priority."
+            "Feed profiles into another profile, to combine the binds into one. "
+            '<a href="https://joystick-diagrams.com/setup/profile-chaining/">Learn more</a>'
         )
         help_text.setObjectName("device_help_label")
+        help_text.setTextFormat(Qt.TextFormat.RichText)
+        help_text.setOpenExternalLinks(True)
         help_text.setWordWrap(True)
         layout.addWidget(help_text)
 

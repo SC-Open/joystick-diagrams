@@ -117,6 +117,69 @@ QMenuBar::item:pressed {{
     background: #3C4043;
 }}
 
+/* Custom menu row (replaces the Qt-Designer QMenuBar) */
+
+QToolButton#jdMenuHelp,
+QToolButton#jdMenuLink,
+QToolButton#jdMenuLinkCta {{
+    background: transparent;
+    border: none;
+    padding: 3px 10px;
+    margin: 0px 1px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+}}
+
+QToolButton#jdMenuHelp {{
+    color: #E8EAED;
+    font-weight: 600;
+}}
+
+QToolButton#jdMenuHelp:hover,
+QToolButton#jdMenuHelp:pressed {{
+    background: #2c2f38;
+}}
+
+QToolButton#jdMenuHelp::menu-indicator {{
+    image: none;
+    width: 0px;
+}}
+
+QToolButton#jdMenuLink {{
+    color: #9AA0A6;
+}}
+
+QToolButton#jdMenuLink:hover {{
+    background: #2c2f38;
+    color: #E8EAED;
+}}
+
+QToolButton#jdMenuLink:pressed {{
+    background: #3C4043;
+}}
+
+QToolButton#jdMenuLinkCta {{
+    color: #F59E0B;
+    font-weight: 600;
+}}
+
+QToolButton#jdMenuLinkCta:hover {{
+    background: rgba(245, 158, 11, 0.12);
+    color: #FCD34D;
+}}
+
+QToolButton#jdMenuLinkCta:pressed {{
+    background: rgba(245, 158, 11, 0.22);
+}}
+
+QFrame#jdMenuDivider {{
+    background: #3C4043;
+    border: none;
+    max-height: 1px;
+    min-height: 1px;
+}}
+
 QMenu {{
     background: #252830;
     color: #E8EAED;

@@ -10,7 +10,7 @@ from joystick_diagrams.plugins.star_citizen_plugin.star_citizen import StarCitiz
 class StarCitizenSettings(PluginSettings):
     actionmaps_file: Path | None = Field(
         default=None,
-        title="actionmaps.xml",
+        title="Your actionmaps.xml from export",
         json_schema_extra={
             "is_folder": False,
             "default_path": "~/",

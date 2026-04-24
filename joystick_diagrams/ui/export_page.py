@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
     QLabel,
     QMainWindow,
     QMessageBox,
+    QSizePolicy,
     QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
@@ -118,6 +119,30 @@ class ExportPage(QMainWindow, export_ui.Ui_Form):
         settings_stack.addLayout(plugins_row)
 
         self.export_settings_container.addLayout(settings_stack)
+
+        # Size distribution: device list absorbs extra vertical space; bottom
+        # settings section stays at its natural size. The Qt Designer file
+        # sets no stretch factors, so space was being split equally.
+        self.verticalLayout.setStretch(0, 0)  # heading
+        self.verticalLayout.setStretch(1, 1)  # devices_layout
+        self.verticalLayout.setStretch(2, 0)  # export_bottom_section
+
+        # The ExportSettings widget itself has inner stretches of (1, 1, 1)
+        # from the generated Qt Designer file, plus vertically-Expanding size
+        # policies on the path label and location button. Override here so
+        # the panel renders at its natural height instead of ballooning.
+        self.export_settings_widget.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum
+        )
+        inner_vl = self.export_settings_widget.verticalLayout
+        for i in range(inner_vl.count()):
+            inner_vl.setStretch(i, 0)
+        self.export_settings_widget.export_location_directory.setSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+        )
+        self.export_settings_widget.setExportLocationButton.setSizePolicy(
+            QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred
+        )
 
         # Defaults
         self.update_export_button_state(0)  # Set the export button state
