@@ -108,6 +108,9 @@ uv sync
 
 Contributions are welcome: new device templates, game plugins, bug fixes, documentation. Open a PR or start a conversation on Discord.
 
+### Device Templates
+Creating these is at the mercy of either owning the device, or the community creating them for others. The biggest help to the project would be increasing our library of templates, and improving the ones we have.
+
 ## License
 
 Distributed under the GPL-2.0 License. See [LICENSE](LICENSE) for more information.
