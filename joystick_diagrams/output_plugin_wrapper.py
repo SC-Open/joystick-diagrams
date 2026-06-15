@@ -68,6 +68,9 @@ class OutputPluginWrapper:
     def error(self) -> str:
         return self._error
 
+    def push_error(self, error: str):
+        self._error = error
+
     def get_plugin_configuration(self, plugin_name: str):
         return db_plugin_data.get_plugin_configuration(plugin_name)
 

@@ -128,6 +128,19 @@ def test_wrapper_properties(wrapper):
     assert wrapper.has_settings() is False
 
 
+def test_push_error_sets_error(wrapper):
+    """push_error should set the error message exposed via the error property."""
+    wrapper.push_error("boom")
+    assert wrapper.error == "boom"
+
+
+def test_push_error_clears_error(wrapper):
+    """push_error with an empty string should clear a previous error."""
+    wrapper.push_error("boom")
+    wrapper.push_error("")
+    assert wrapper.error == ""
+
+
 def test_enabled_toggle_persists(wrapper):
     """Toggling enabled state should call store_plugin_configuration."""
     with patch.object(wrapper, "store_plugin_configuration") as mock_store:
